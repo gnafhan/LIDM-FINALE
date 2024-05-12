@@ -40,12 +40,16 @@ function BottomNav () {
                   name={item.icon}
                   size={20}
                   solid={false}
-                  color={`${route == item.path ? '#687FEA' : 'black'}`}
+                  color={`${route == item.path || (item.path!== '/' && route.includes(item.path.substring(1))) ? '#687FEA' : 'black'}`}
                 />
                 <Text
                   className={`text-xs  ${
-                    route == item.path ? 'text-primary font-bold' : 'text-black'
-                  }`}
+                        route == item.path ||
+                        (item.path !== '/' && route.includes(item.path.substring(1)))
+                          ? 'text-primary font-bold'
+                          : 'text-black'
+
+                                          }`}
                 >
                   {item.name}
                 </Text>
@@ -68,7 +72,7 @@ const navigation = [
   {
     name: 'Baca Modul',
     icon: 'book',
-    path: '/baca-modul',
+    path: '/modul',
     active: false
   },
   {
@@ -80,7 +84,7 @@ const navigation = [
   {
     name: 'Mencatat',
     icon: 'pen',
-    path: '/mencatat',
+    path: '/catatan',
     active: false
   },
   {
