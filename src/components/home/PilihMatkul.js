@@ -19,8 +19,8 @@ function PilihMatkul () {
           Kode
         </Text>
       </View>
-      <ScrollView className=' h-[55%]'>
-        <View className='flex flex-row flex-wrap justify-between w-full '>
+      <ScrollView className=' h-[45vh]'>
+        <View className='flex flex-row flex-wrap justify-between w-full ms-4 '>
           {data.length > 0 ? (
             data.map((item, index) => <MatkulCard key={index} />)
           ) : (
