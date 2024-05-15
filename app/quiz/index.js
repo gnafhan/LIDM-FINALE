@@ -1,16 +1,8 @@
 import { View, Text, Image, ScrollView } from 'react-native'
-
-
 import Layout from '../../src/layout/layout'
-import { router } from 'expo-router'
 import CurrentPage from '../../src/components/kelas/CurrentPage'
 import biologi from '../../assets/biologi.png'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody
-} from 'accordion-collapse-react-native'
 import { useState } from 'react'
 import AccordionQuiz from '../../src/components/quiz/AccordionQuiz'
 
