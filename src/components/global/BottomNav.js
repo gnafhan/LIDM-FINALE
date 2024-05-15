@@ -57,8 +57,8 @@ function BottomNav () {
   const changePage = () => {
     let voice = command.join(" ")
     let validCommand = ["valid", "falit", "pelit"]
-    let gantiCommand = ["ganti halaman", "ke halaman"]
-    let backCommand = ["kembali", "back", "bek", "sebelumnya"]
+    let gantiCommand = ["ganti halaman", "ke halaman", "pindah halaman", "halaman"]
+    let backCommand = ["kembali", "back", "bek", "sebelumnya", "bag", "bad", "balik"]
     let halamanCommand = {
       "home": ["beranda", "home", "hom"],
       "modul": ["modul", "baca modul", "buku", "baca buku"],
@@ -69,7 +69,7 @@ function BottomNav () {
     if(checkCommand(validCommand, voice)){
       if(checkCommand(gantiCommand, voice)){
         if(checkCommand(halamanCommand["modul"], voice)){
-          router.push("/modul")
+          router.push("/modul/baca")
         } else  if(checkCommand(halamanCommand["catatan"], voice)){
           router.push("/catatan")
         } else if(checkCommand(halamanCommand["quiz"], voice)){
@@ -105,6 +105,7 @@ function BottomNav () {
 
   useEffect(() => {
     changePage()
+    console.log(command)
   }, [command])
 
   return (
@@ -134,7 +135,7 @@ function BottomNav () {
             ) : (
               <View
                 onTouchStart={() => {
-                  router.replace(item.path.substring(1) || '/')
+                  router.push(item.path.substring(1) || '/')
                 }}
                 key={index}
                 className='flex flex-col items-center justify-center flex-1 gap-1 '
@@ -175,7 +176,7 @@ const navigation = [
   {
     name: 'Baca Modul',
     icon: 'book',
-    path: '/modul',
+    path: '/modul/baca',
     active: false
   },
   {
