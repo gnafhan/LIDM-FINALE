@@ -17,7 +17,7 @@ const AccordionQuizItem = ({ id, title, jumlah, isDone, nilai }) => {
     )
   }
   return (
-    <View onTouchStart={()=> router.push(`/quiz/${id}`)} className=' rounded-3xl mt-2 border-primary bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between'>
+    <View onTouchEndCapture={()=> router.push(`/quiz/${id}`)} className=' rounded-3xl mt-2 border-primary bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between'>
       <View className='flex-col flex '>
         <Text className='text-lg font-bold'>{title}</Text>
         <Text className='text-md text-secondary'>{jumlah} Soal</Text>
