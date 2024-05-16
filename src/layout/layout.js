@@ -9,6 +9,7 @@ import {
   Poppins_400Regular
 } from '@expo-google-fonts/poppins'
 import Loading from '../components/global/Loading'
+import { AppProvider } from '../context/AppContext'
 
 function Layout ({ children, className }) {
   const [fontsLoaded] = useFonts({
@@ -21,10 +22,12 @@ function Layout ({ children, className }) {
     return <Loading />
   }
   return (
-    <SafeAreaView className={`relative flex h-full px-4 ${className}`}>
-      {children}
-      <BottomNav />
-    </SafeAreaView>
+    <AppProvider>
+      <SafeAreaView className={`relative flex h-full px-4 ${className}`}>
+        {children}
+        <BottomNav />
+      </SafeAreaView>
+    </AppProvider>
   )
 }
 

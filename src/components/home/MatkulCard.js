@@ -12,7 +12,7 @@ import { router } from 'expo-router'
 
 function MatkulCard () {
   return (
-    <View onTouchStart={()=>router.push('/kelas')} style={{shadowOpacity: 3, shadowColor: '#7F7F82', shadowOffset: 10, shadowRadius: 10}} className='w-[48%] aspect-square h-auto justify-between py-2 px-3 bg-white shadow-md  mt-4 rounded-[17px] '>
+    <View onTouchEndCapture={()=>router.push('/kelas')} style={{shadowOpacity: 3, shadowColor: '#7F7F82', shadowOffset: 10, shadowRadius: 10}} className='w-[48%] aspect-square h-auto justify-between py-2 px-3 bg-white shadow-md  mt-4 rounded-[17px] '>
       <View className='flex items-end justify-end w-full '>
         <Image className='w-28 h-28' source={biologi} alt='aa' />
       </View>
