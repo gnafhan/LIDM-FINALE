@@ -18,7 +18,7 @@ const AccordionItemModul = ({ id, title, jumlah, isDone, nilai, tanggal }) => {
     )
   }
   return (
-    <View onTouchStart={()=> router.push(`/modul/${id}`)} className=' rounded-3xl mt-2 border-primary bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between'>
+    <View onTouchEndCapture={()=> router.push(`/modul/${id}`)} className=' rounded-3xl mt-2 border-primary bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between'>
       <View className='flex-col flex '>
         <Text className='text-lg font-bold'>{title}</Text>
         <Text className='text-md text-secondary'>{formatDate(tanggal)}</Text>

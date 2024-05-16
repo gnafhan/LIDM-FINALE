@@ -30,7 +30,7 @@ export default function App () {
           <View className='flex flex-row flex-wrap justify-between w-full ms-4 '>
             {[1, 2, 3, 4, 5].map((item, index) => (
             <View
-              onTouchStart={() => router.push('/catatan/edit')}
+              onTouchEndCapture={() => router.push('/catatan/edit')}
               style={{
                 shadowOpacity: 3,
                 shadowColor: '#7F7F82',

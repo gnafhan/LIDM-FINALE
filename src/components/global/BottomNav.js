@@ -1,10 +1,151 @@
 import { View, Text } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { router, usePathname } from 'expo-router'
-import React from 'react'
+import Voice from '@react-native-voice/voice'
+import checkCommand from '../../util/checkCommand'
+import getCommand from '../../util/getCommand'
+import React, {useEffect, useState, useContext} from 'react'
+import { AppContext } from '../../context/AppContext'
 
 function BottomNav () {
+  const { dispatch, pdfPage, pdfZoom } = useContext(AppContext)
+  const [microphone, setMicrophone] = useState(true)
+  const [command, setCommand] = useState([])
   const route = usePathname()
+
+  const startSpeech = async () => {
+    await Voice.start("id-ID", {
+      "EXTRA_PARTIAL_RESULTS": true
+    })
+  }
+  const stopSpeech = async () => {
+    await Voice.stop()
+  }
+  const toggleMicrophone = () => {
+    if(microphone){
+      console.log("Microphone aktif")
+      setMicrophone(false)
+      startSpeech()
+    } else {
+      console.log("Microphone tidak aktif")
+      setMicrophone(true)
+      stopSpeech()
+    }
+  }
+  
+  const onSpeechResults = (result) => {
+    setCommand(result.value)
+  }
+  const onSpeechError = (error) => {
+    console.log(error)
+    setTimeout(()=>{
+      startSpeech()
+      setMicrophone(false)
+    }, 500)
+  }
+  const onSpeechEnd = (e) => {
+      setTimeout(()=>{
+        startSpeech()
+        setMicrophone(false)
+      }, 500)
+  }
+
+  const changePage = () => {
+    
+  }
+
+  useEffect(() => {
+    setTimeout(()=>{
+      startSpeech()
+      setMicrophone(false)
+    }, 500)
+
+    Voice.onSpeechError = onSpeechError
+    Voice.onSpeechResults = onSpeechResults
+    Voice.onSpeechEnd = onSpeechEnd
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(command)
+    let voice = command.join(" ").toLowerCase()
+
+    if(checkCommand(getCommand('valid'), voice)){
+      // If user in baca modul page
+      if(route == '/modul/baca'){
+        if(checkCommand(getCommand('scroll'), voice)){
+            if(checkCommand(getCommand('scrollNaik'), voice)){
+                console.log("scroll naik")
+                dispatch({
+                    type: 'SCROLL_PAGE',
+                    payload: {
+                        number: pdfPage-1
+                    }
+                })
+            } else if(checkCommand(getCommand('scrollTo'), voice)){
+                let commandSplit = command[0].split(" ")
+                let pageNumber = parseInt(commandSplit[commandSplit.length - 1])
+                dispatch({
+                  type: 'SCROLL_PAGE',
+                  payload: {
+                      number: pageNumber
+                  }
+              })
+            } else {
+              console.log("scroll turun")
+                dispatch({
+                    type: 'SCROLL_PAGE',
+                    payload: {
+                        number: pdfPage+1
+                    }
+                })
+            }
+          } else if(checkCommand(getCommand('zoomIn'), voice)){
+            dispatch({
+                type: 'ZOOM_PAGE',
+                payload: {
+                    zoom: pdfZoom + 0.05
+                }
+            })
+          } else if(checkCommand(getCommand('zoomOut'), voice)){
+            dispatch({
+                type: 'ZOOM_PAGE',
+                payload: {
+                    zoom: pdfZoom - 0.05
+                }
+            })
+          } else {
+             console.log('command salah')
+          }
+      } 
+      
+      // Change page
+      if(checkCommand(getCommand('gantiHalaman'), voice)){
+        if(checkCommand(getCommand('halaman', 'modul'), voice)){
+            router.push("/modul/baca")
+        } else  if(checkCommand(getCommand('halaman', 'catatan'), voice)){
+            router.push("/catatan")
+        } else if(checkCommand(getCommand('halaman', 'quiz'), voice)){
+            router.push("/quiz")
+        } else if(checkCommand(getCommand('halaman', 'home'), voice)){
+            router.push("/")
+        } else if(checkCommand(getCommand('back'), voice)){
+            router.back()
+        } else {
+          console.log('page tidak ditemukan')
+        }
+      } else if(checkCommand(getCommand('back'), voice)){
+        router.back()
+      } else {
+        console.log('command salah')
+      } 
+       
+    }
+
+  }, [command])
+
   return (
     <View className='absolute self-center w-full py-3  shadow-2xl bg-[#E2E4ED] rounded-2xl bottom-7'>
       <View className='flex flex-row w-full'>
@@ -14,10 +155,11 @@ function BottomNav () {
               <View className='flex flex-col items-center justify-center flex-1 gap-1 '>
                 <View
                   key={index}
+                  onTouchEndCapture={toggleMicrophone}
                   className='absolute top-[-46px] p-5 rounded-full justify-center-center text-center flex flex-col items-center bg-primary'
                 >
                   <FontAwesome5Icon
-                    name={'microphone'}
+                    name={microphone ? 'microphone' : 'stop'}
                     size={30}
                     solid
                     style={{
@@ -30,8 +172,8 @@ function BottomNav () {
               </View>
             ) : (
               <View
-                onTouchStart={() => {
-                  router.replace(item.path.substring(1) || '/')
+                onTouchEndCapture={() => {
+                  router.push(item.path.substring(1) || '/')
                 }}
                 key={index}
                 className='flex flex-col items-center justify-center flex-1 gap-1 '
@@ -72,7 +214,7 @@ const navigation = [
   {
     name: 'Baca Modul',
     icon: 'book',
-    path: '/modul',
+    path: '/modul/baca',
     active: false
   },
   {

@@ -17,7 +17,7 @@ const CurrentPage = ({ page }) => {
       />
       <Text className='text-lg font-bold'>{page}</Text>
       <FontAwesome5Icon
-        style={{ marginRight: 5, marginBottom: 1, color: 'white' }}
+        style={{ marginRight: 5, marginBottom: 1, color: 'black' }}
         size={25}
         name='bars'
       />

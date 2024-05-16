@@ -19,14 +19,34 @@
         "foregroundImage": "./assets/adaptive-icon_fix.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.lidmfinal"
+      "package": "com.anonymous.lidmfinal",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf",
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Allow Voice to Text Tutorial to access the microphone",
+          "speechRecognitionPermission": "Allow Voice to Text Tutorial to securely recognize user speech"
+        }
+      ]
     ],
-  "scheme": "lidmfinal"
+    "scheme": "lidmfinal",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "32ef4fe3-ffe0-4ddb-9056-104675a736c2"
+      }
+    }
   }
 }

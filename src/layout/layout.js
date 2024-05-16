@@ -10,6 +10,7 @@ import {
 } from '@expo-google-fonts/poppins'
 import Loading from '../components/global/Loading'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AppProvider } from '../context/AppContext'
 
 const queryClient = new QueryClient()
 
@@ -24,12 +25,14 @@ function Layout ({ children, className }) {
     return <Loading />
   }
   return (
-    <SafeAreaView className={`relative flex h-full px-4 ${className}`}>
+    <AppProvider>
+      <SafeAreaView className={`relative flex h-full px-4 ${className}`}>
       <QueryClientProvider client={queryClient} >
-      {children}
-      <BottomNav />
+        {children}
+        <BottomNav />
       </QueryClientProvider>
-    </SafeAreaView>
+      </SafeAreaView>
+    </AppProvider>
   )
 }
 
