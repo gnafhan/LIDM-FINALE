@@ -6,9 +6,10 @@ import checkCommand from '../../util/checkCommand'
 import getCommand from '../../util/getCommand'
 import React, {useEffect, useState, useContext} from 'react'
 import { AppContext } from '../../context/AppContext'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 
 function BottomNav () {
-  const { dispatch, pdfPage, pdfZoom } = useContext(AppContext)
+  const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan } = useContext(AppContext)
   const [microphone, setMicrophone] = useState(true)
   const [command, setCommand] = useState([])
   const route = usePathname()
@@ -73,6 +74,12 @@ function BottomNav () {
     let voice = command.join(" ").toLowerCase()
 
     if(checkCommand(getCommand('valid'), voice)){
+      // If user in modul page
+      if(route == '/modul'){
+        if(checkCommand(getCommand('openModul'), voice)){
+          router.push('/modul/baca')
+        }
+      }
       // If user in baca modul page
       if(route == '/modul/baca'){
         if(checkCommand(getCommand('scroll'), voice)){
@@ -120,11 +127,71 @@ function BottomNav () {
              console.log('command salah')
           }
       } 
+
+      // If user in catatan page
+      if(route == '/catatan'){
+        console.log(editCatatan)
+        if(checkCommand(getCommand('openCatatan'), voice)){
+          router.push('/catatan/edit')
+        }
+      }
+      // If user in catatan edit page
+      if(route == '/catatan/edit'){
+        if(checkCommand(getCommand('startEdit'), voice)){
+          dispatch({
+            type: 'EDIT_CATATAN',
+            payload: {
+              edit: true
+            }
+          })
+        }
+        if(checkCommand(getCommand('stopEdit'), voice)){
+          dispatch({
+            type: 'EDIT_CATATAN',
+            payload: {
+              edit: false
+            }
+          })
+        }
+        if(editCatatan){
+          if(checkCommand(getCommand('backspace'), voice)){
+            let editedCatatan = currentCatatan.slice(0, -1)
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: editedCatatan
+              }
+            })
+          } else if(checkCommand(getCommand('deleteLastWord'), voice)){
+            let editedCatatan = currentCatatan.split(" ")
+            editedCatatan.pop()
+            editedCatatan = editedCatatan.join(" ")
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: editedCatatan
+              }
+            })
+          } else if(checkCommand(getCommand('deleteLastSentence'), voice)){
+            let editedCatatan = currentCatatan.split(".")
+            editedCatatan.pop()
+            editedCatatan = editedCatatan.join(".")
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: editedCatatan
+              }
+            })
+          } else {
+            //
+          }
+        }
+      }
       
       // Change page
       if(checkCommand(getCommand('gantiHalaman'), voice)){
         if(checkCommand(getCommand('halaman', 'modul'), voice)){
-            router.push("/modul/baca")
+            router.push("/modul")
         } else  if(checkCommand(getCommand('halaman', 'catatan'), voice)){
             router.push("/catatan")
         } else if(checkCommand(getCommand('halaman', 'quiz'), voice)){
@@ -142,6 +209,21 @@ function BottomNav () {
         console.log('command salah')
       } 
        
+    } else {
+      if(route == '/catatan/edit'){
+        if(editCatatan){
+          if(command[0]){
+            let signExcepted = [',', '.', ' ', '!', '?']
+            let space = signExcepted.includes(command[0]) ? '' : ' '
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: currentCatatan + space + command[0]
+              }
+            })
+          }
+        }
+      }
     }
 
   }, [command])
@@ -214,7 +296,7 @@ const navigation = [
   {
     name: 'Baca Modul',
     icon: 'book',
-    path: '/modul/baca',
+    path: '/modul',
     active: false
   },
   {
