@@ -2,9 +2,13 @@ import { View, Text } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { router, usePathname } from 'expo-router'
 import Voice from '@react-native-voice/voice'
-import React, {useEffect, useState} from 'react'
+import checkCommand from '../../util/checkCommand'
+import getCommand from '../../util/getCommand'
+import React, {useEffect, useState, useContext} from 'react'
+import { AppContext } from '../../context/AppContext'
 
 function BottomNav () {
+  const { dispatch, pdfPage, pdfZoom } = useContext(AppContext)
   const [microphone, setMicrophone] = useState(true)
   const [command, setCommand] = useState([])
   const route = usePathname()
@@ -28,6 +32,7 @@ function BottomNav () {
       stopSpeech()
     }
   }
+  
   const onSpeechResults = (result) => {
     setCommand(result.value)
   }
@@ -45,48 +50,8 @@ function BottomNav () {
       }, 500)
   }
 
-  const checkCommand = (command, voice) => {
-    for(let cmd of command){
-      if(voice.includes(cmd)){
-        return true;
-      }
-    }
-    return false
-  }
-
   const changePage = () => {
-    let voice = command.join(" ")
-    let validCommand = ["valid", "falit", "pelit"]
-    let gantiCommand = ["ganti halaman", "ke halaman", "pindah halaman", "halaman"]
-    let backCommand = ["kembali", "back", "bek", "sebelumnya", "bag", "bad", "balik"]
-    let halamanCommand = {
-      "home": ["beranda", "home", "hom"],
-      "modul": ["modul", "baca modul", "buku", "baca buku"],
-      "catatan": ["mencatat", "catatan"],
-      "quiz": ["quiz", "kuis"],
-    }
     
-    if(checkCommand(validCommand, voice)){
-      if(checkCommand(gantiCommand, voice)){
-        if(checkCommand(halamanCommand["modul"], voice)){
-          router.push("/modul/baca")
-        } else  if(checkCommand(halamanCommand["catatan"], voice)){
-          router.push("/catatan")
-        } else if(checkCommand(halamanCommand["quiz"], voice)){
-          router.push("/quiz")
-        } else if(checkCommand(halamanCommand["home"], voice)){
-          router.push("/")
-        } else if(checkCommand(backCommand, voice)){
-          router.back()
-        } else {
-          //startSpeech()
-        }
-      } else if(checkCommand(backCommand, voice)){
-        router.back()
-      } else {
-        //startSpeech()
-      }
-    }
   }
 
   useEffect(() => {
@@ -104,8 +69,81 @@ function BottomNav () {
   }, [])
 
   useEffect(() => {
-    changePage()
     console.log(command)
+    let voice = command.join(" ").toLowerCase()
+
+    if(checkCommand(getCommand('valid'), voice)){
+      // If user in baca modul page
+      if(route == '/modul/baca'){
+        if(checkCommand(getCommand('scroll'), voice)){
+            if(checkCommand(getCommand('scrollNaik'), voice)){
+                console.log("scroll naik")
+                dispatch({
+                    type: 'SCROLL_PAGE',
+                    payload: {
+                        number: pdfPage-1
+                    }
+                })
+            } else if(checkCommand(getCommand('scrollTo'), voice)){
+                let commandSplit = command[0].split(" ")
+                let pageNumber = parseInt(commandSplit[commandSplit.length - 1])
+                dispatch({
+                  type: 'SCROLL_PAGE',
+                  payload: {
+                      number: pageNumber
+                  }
+              })
+            } else {
+              console.log("scroll turun")
+                dispatch({
+                    type: 'SCROLL_PAGE',
+                    payload: {
+                        number: pdfPage+1
+                    }
+                })
+            }
+          } else if(checkCommand(getCommand('zoomIn'), voice)){
+            dispatch({
+                type: 'ZOOM_PAGE',
+                payload: {
+                    zoom: pdfZoom + 0.05
+                }
+            })
+          } else if(checkCommand(getCommand('zoomOut'), voice)){
+            dispatch({
+                type: 'ZOOM_PAGE',
+                payload: {
+                    zoom: pdfZoom - 0.05
+                }
+            })
+          } else {
+             console.log('command salah')
+          }
+      } 
+      
+      // Change page
+      if(checkCommand(getCommand('gantiHalaman'), voice)){
+        if(checkCommand(getCommand('halaman', 'modul'), voice)){
+            router.push("/modul/baca")
+        } else  if(checkCommand(getCommand('halaman', 'catatan'), voice)){
+            router.push("/catatan")
+        } else if(checkCommand(getCommand('halaman', 'quiz'), voice)){
+            router.push("/quiz")
+        } else if(checkCommand(getCommand('halaman', 'home'), voice)){
+            router.push("/")
+        } else if(checkCommand(getCommand('back'), voice)){
+            router.back()
+        } else {
+          console.log('page tidak ditemukan')
+        }
+      } else if(checkCommand(getCommand('back'), voice)){
+        router.back()
+      } else {
+        console.log('command salah')
+      } 
+       
+    }
+
   }, [command])
 
   return (
