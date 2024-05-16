@@ -4,6 +4,7 @@
 node_modules/
 .env
 android/
+package-lock.json
 
 # Expo
 .expo/
