@@ -9,6 +9,9 @@ import {
   Poppins_400Regular
 } from '@expo-google-fonts/poppins'
 import Loading from '../components/global/Loading'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 function Layout ({ children, className }) {
   const [fontsLoaded] = useFonts({
@@ -22,8 +25,10 @@ function Layout ({ children, className }) {
   }
   return (
     <SafeAreaView className={`relative flex h-full px-4 ${className}`}>
+      <QueryClientProvider client={queryClient} >
       {children}
       <BottomNav />
+      </QueryClientProvider>
     </SafeAreaView>
   )
 }
