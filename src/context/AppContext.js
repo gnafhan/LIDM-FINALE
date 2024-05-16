@@ -15,7 +15,22 @@ export const AppReducer = (state, action) => {
             action.type = 'DONE'
             return {
                 ...state
-            }  
+            }
+        case 'EDIT_CATATAN':
+                let editCatatan = action.payload.edit
+                state.editCatatan = editCatatan
+                action.type = 'DONE'
+                return {
+                    ...state
+                } 
+        case 'SET_CATATAN':
+                let catatan = action.payload.catatan
+                state.currentCatatan = catatan
+                
+                action.type = 'DONE'
+                return {
+                    ...state
+                }      
         default:
             return state
     }
@@ -23,7 +38,9 @@ export const AppReducer = (state, action) => {
 
 const initialState = {
     pdfPage: 1,
-    pdfZoom: 1
+    pdfZoom: 1,
+    editCatatan: true,
+    currentCatatan: ''
 }
 
 export const AppContext = createContext()
@@ -36,7 +53,9 @@ export const AppProvider = (props) => {
             value={{
                 dispatch,
                 pdfPage: state.pdfPage,
-                pdfZoom: state.pdfZoom
+                pdfZoom: state.pdfZoom,
+                editCatatan: state.editCatatan,
+                currentCatatan: state.currentCatatan
             }}
         >
             {props.children}
