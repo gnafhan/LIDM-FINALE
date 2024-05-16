@@ -29,6 +29,8 @@
     },
     "plugins": [
       "expo-router",
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf",
       [
         "@react-native-voice/voice",
         {
