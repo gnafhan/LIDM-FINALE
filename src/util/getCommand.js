@@ -1,7 +1,7 @@
 const commands = {
     'valid': ["valid", "falit", "pelit"],
     'gantiHalaman': ["ganti halaman", "ke halaman", "pindah halaman", "halaman"],
-    'back': ["kembali", "back", "bek", "sebelumnya", "bag", "bad", "balik"],
+    'back': ["kembali", "back", "bek", "sebelumnya", "bag", "bad"],
     'scroll': ["scroll", "skrol", "gulir", "scrol"],
     'scrollNaik': ["naik", "atas", "night"],
     'scrollTo': ["ke halaman", "menuju"],
