@@ -32,7 +32,7 @@ function WelcomeBanner () {
         <TextInput
           style={styles.regular}
           className='px-5 py-3 pt-4 mt-3 bg-[#fff] rounded-full'
-          placeholder='Katakan valid untuk memulai'
+          placeholder='Masukkan kode kelas'
         />
       </View>
     </View>
