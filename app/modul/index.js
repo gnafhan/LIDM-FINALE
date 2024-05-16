@@ -4,14 +4,12 @@ import CurrentPage from '../../src/components/kelas/CurrentPage'
 import biologi from '../../assets/biologi.png'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useState } from 'react'
-import AccordionQuiz from '../../src/components/quiz/AccordionQuiz'
 import AccordionModul from '../../src/components/modul/AccordionModul'
 
 
 
 
 export default function App () {
-const [isCollapsed, setIsCollapsed] = useState(true)
 
 return (
   <Layout>
