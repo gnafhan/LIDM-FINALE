@@ -155,7 +155,7 @@ function BottomNav () {
               <View className='flex flex-col items-center justify-center flex-1 gap-1 '>
                 <View
                   key={index}
-                  onTouchStart={toggleMicrophone}
+                  onTouchEndCapture={toggleMicrophone}
                   className='absolute top-[-46px] p-5 rounded-full justify-center-center text-center flex flex-col items-center bg-primary'
                 >
                   <FontAwesome5Icon
@@ -172,7 +172,7 @@ function BottomNav () {
               </View>
             ) : (
               <View
-                onTouchStart={() => {
+                onTouchEndCapture={() => {
                   router.push(item.path.substring(1) || '/')
                 }}
                 key={index}
