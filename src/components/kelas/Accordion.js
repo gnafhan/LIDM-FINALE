@@ -33,7 +33,7 @@ export const Accordion = ({ data, title }) => {
         <View className='flex flex-col w-full px-0 py-3 mt-3 bg-white rounded-xl'>
           {data.length > 0 ? (
             data.map((item, index) => (
-              <AccordionItem name={'aaa'} key={index} />
+              <AccordionItem  name={'aaa'} key={index} />
             ))
           ) : (
             <View className='flex w-full h-[50vh] justify-center items-center'>
