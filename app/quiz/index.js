@@ -57,7 +57,7 @@ return (
               >
                 <Text className='text-xl font-bold text-white'>Selesai</Text>
               </View>
-              <AccordionQuiz title={"Marematika"} data={dataSelesai} />
+              <AccordionQuiz title={"Matematika"} data={dataSelesai} />
             </View>
             <View>
               <View

@@ -2,9 +2,15 @@ import { ScrollView, Text, View } from 'react-native'
 import CurrentPage from '../../src/components/kelas/CurrentPage'
 import Layout from '../../src/layout/layout'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+// import CatatanBox from '../../src/components/catatan/CatatanBox'
 import { router } from 'expo-router'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
+// import { useEffect, useState, useContext } from 'react'
+// import { AppContext } from '../../src/context/AppContext'
+import CatatanItems from '../../src/components/catatan/CatatanItems'
 
 export default function App () {
+
   return (
     <Layout>
       <CurrentPage page={''} />
@@ -12,6 +18,7 @@ export default function App () {
         <View className='flex flex-row items-center justify-between w-full px-5'>
           <Text className='text-xl font-semibold'>Catatan Saya</Text>
           <FontAwesome5Icon
+            onPress={() => router.push('/catatan/edit/create')}
             name='plus'
             style={{
               // backgroundColor: '#687FEA',
@@ -26,32 +33,22 @@ export default function App () {
             solid={false}
           />
         </View>
-        <ScrollView className=' h-[65vh]'>
-          <View className='flex flex-row flex-wrap justify-between w-full ms-4 '>
-            {[1, 2, 3, 4, 5].map((item, index) => (
-            <View
-              onTouchEndCapture={() => router.push('/catatan/edit')}
-              style={{
-                shadowOpacity: 3,
-                shadowColor: '#7F7F82',
-                shadowOffset: 10,
-                shadowRadius: 10
-              }}
-              key={index}
-              className='w-[48%] h-[100%] aspect-square justify-between py-3 px-4 bg-white shadow-md  mt-4 rounded-[17px] '
-            >
-              <View>
-                <Text className='text-xl font-bold'>Matematika 1</Text>
-                <Text className='text-normal text-[#7F7F82] max-h-[80%] '>
-                  Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.
-                </Text>
-              </View>
-            </View>
-              ))}
-
-          </View>
+        <ScrollView className=' h-[70vh]'>
+          <CatatanItems />
         </ScrollView>
       </View>
     </Layout>
   )
 }
+
+// const data = {
+//   'AGS81': {
+//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
+//   },
+//   'AGVV81': {
+//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
+//   },
+//   'AGAA81': {
+//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscingdolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
+//   }
+// }

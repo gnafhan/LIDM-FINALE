@@ -12,6 +12,7 @@ import {
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { Accordion } from '../../src/components/kelas/Accordion'
 import { useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
 
 export default function App () {
     const {slug} = useLocalSearchParams()

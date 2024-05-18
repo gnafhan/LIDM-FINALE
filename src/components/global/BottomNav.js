@@ -6,14 +6,25 @@ import checkCommand from '../../util/checkCommand'
 import getCommand from '../../util/getCommand'
 import React, {useEffect, useState, useContext} from 'react'
 import { AppContext } from '../../context/AppContext'
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import CustomAlert from '../home/CustomAlert'
 
 function BottomNav () {
-  const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan } = useContext(AppContext)
+  const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan, kodeKelas, daftarKelas } = useContext(AppContext)
+  const [alertVisible, setAlertVisible] = useState(false);
   const [microphone, setMicrophone] = useState(true)
   const [command, setCommand] = useState([])
+  const [myClass, setMyClass] = useState({})
+  const [myCatatan, setMyCatatan] = useState({})
   const route = usePathname()
 
+
+  const getData = async () => {
+    const classData = await AsyncStorage.getItem('classes')
+    const catatanData = await AsyncStorage.getItem('catatan')
+    setMyClass(JSON.parse(classData))
+    setMyCatatan(JSON.parse(catatanData))
+  }
   const startSpeech = async () => {
     await Voice.start("id-ID", {
       "EXTRA_PARTIAL_RESULTS": true
@@ -50,12 +61,17 @@ function BottomNav () {
         setMicrophone(false)
       }, 500)
   }
+  const showAlert = () => {
+    setAlertVisible(true)
+  }
 
-  const changePage = () => {
-    
+  const handleDismiss = () => {
+    setAlertVisible(false)
   }
 
   useEffect(() => {
+    getData()
+
     setTimeout(()=>{
       startSpeech()
       setMicrophone(false)
@@ -74,10 +90,65 @@ function BottomNav () {
     let voice = command.join(" ").toLowerCase()
 
     if(checkCommand(getCommand('valid'), voice)){
+      // If user if home pae
+      if(route == '/'){
+        if(checkCommand(getCommand('kodeKelas'), voice)){
+          let kodeKelas = command[0].toLowerCase()
+          kodeKelas = kodeKelas.replace('masukkan kode', '').replace('kelas', '')
+          kodeKelas = kodeKelas.replace('valid', '').replace('falit', '').replace('pelit', '')
+          kodeKelas = kodeKelas.replace(/\s/g, '').toUpperCase()
+          dispatch({
+            type: 'SET_KODE_KELAS',
+            payload: {
+              kode: kodeKelas
+            }
+          })
+        } else if(checkCommand(getCommand('enterKode'), voice)){
+          const semuaKelas = Object.values(daftarKelas ? daftarKelas : {}).map((item) => item[0])
+          let submitKode = 'CLS-'+kodeKelas
+          if(semuaKelas.includes(submitKode)){
+            let newKelasKey = ''
+            for(let key of Object.keys(daftarKelas)){
+              if(daftarKelas[newKelasKey]){
+                if(daftarKelas[newKelasKey][0] == submitKode){
+                  break
+                }
+              }
+              newKelasKey = key
+            }
+            let newKelas = daftarKelas[newKelasKey]
+            let newMyClass = { ...myClass }
+            newMyClass[newKelasKey] = newKelas
+            AsyncStorage.setItem('classes', JSON.stringify(newMyClass))
+            setMyClass(newMyClass)
+            router.push(`/kelas/${newKelas[1]}`)
+          } else {
+            showAlert()
+          }
+        } else if(checkCommand(getCommand('masukKelas'), voice)){
+          let namaKelas = command[0].toLowerCase()
+          namaKelas = namaKelas.replace('masuk', '').replace('buka', '').replace('kelas', '')
+          namaKelas = namaKelas.replace('valid', '').replace('falit', '').replace('pelit', '')
+          namaKelas = namaKelas.trim().toLowerCase()
+          if(daftarKelas.hasOwnProperty(namaKelas)){
+            router.push(`/kelas/${daftarKelas[namaKelas].id}`)
+          }
+        }
+      }
+
       // If user in modul page
       if(route == '/modul'){
         if(checkCommand(getCommand('openModul'), voice)){
-          router.push('/modul/baca')
+          let modulRaw = command[0].toLowerCase()
+          modulRaw = modulRaw.replace('buka', '').replace('lihat', '').replace('modul', '').replace('module', '')
+          modulRaw = modulRaw.replace('valid', '').replace('falit', '').replace('pelit', '')
+          modulRaw = modulRaw.trim().split(' ')
+          let modulNumber = modulRaw[0]
+          let modulName = modulRaw.slice(1).join(' ')
+          console.log('Awal : ' + modulName)
+          console.log('Modul number : ' + modulNumber)
+          console.log('Modul name : ' + modulName)
+          //router.push('/modul/baca')
         }
       }
       // If user in baca modul page
@@ -130,13 +201,23 @@ function BottomNav () {
 
       // If user in catatan page
       if(route == '/catatan'){
-        console.log(editCatatan)
         if(checkCommand(getCommand('openCatatan'), voice)){
-          router.push('/catatan/edit')
+          let catatanKode = command[0].toLowerCase()
+          catatanKode = catatanKode.replace('buka', '').replace('lihat', '').replace('catatan', '')
+          catatanKode = catatanKode.replace('valid', '').replace('falit', '').replace('pelit', '')
+          catatanKode = catatanKode.replace(/\s/g, '').toUpperCase()
+          console.log('Kode catatan : ' + catatanKode)
+          if((myCatatan ? myCatatan : {}).hasOwnProperty(catatanKode)){
+            router.push(`/catatan/edit/${catatanKode}`)
+          } else {
+            showAlert()
+          }
+        } else if(checkCommand(getCommand('createCatatan'), voice)){
+          router.push('/catatan/edit/create')
         }
       }
       // If user in catatan edit page
-      if(route == '/catatan/edit'){
+      if(route.startsWith('/catatan/edit')){
         if(checkCommand(getCommand('startEdit'), voice)){
           dispatch({
             type: 'EDIT_CATATAN',
@@ -182,9 +263,42 @@ function BottomNav () {
                 catatan: editedCatatan
               }
             })
+          } else if(checkCommand(getCommand('deleteLastLine'), voice)){
+            console.log(currentCatatan)
+            let editedCatatan = currentCatatan.split("<br>")
+            editedCatatan.pop()
+            editedCatatan = editedCatatan.join("<br>")
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: editedCatatan
+              }
+            })
+          } else if(checkCommand(getCommand('createNewLine'), voice)){
+            let editedCatatan = currentCatatan + '<br>'
+            dispatch({
+              type: 'SET_CATATAN',
+              payload: {
+                catatan: editedCatatan
+              }
+            })
           } else {
             //
           }
+        }
+      }
+      if(route == '/quiz'){
+        if(checkCommand(getCommand('openQuiz'), voice)){
+          let quizRaw = command[0].toLowerCase()
+          quizRaw = quizRaw.replace('buka', '').replace('lihat', '').replace('quiz', '').replace('kuis', '')
+          quizRaw = quizRaw.replace('valid', '').replace('falit', '').replace('pelit', '')
+          quizRaw = quizRaw.trim().split(' ')
+          let quizNumber = quizRaw[0]
+          let quizName = quizRaw.slice(1).join(' ')
+          console.log('Awal : ' + quizRaw)
+          console.log('Quiz number : ' + quizNumber)
+          console.log('Quiz name : ' + quizName)
+          // route.push('/quiz/1)
         }
       }
       
@@ -210,7 +324,7 @@ function BottomNav () {
       } 
        
     } else {
-      if(route == '/catatan/edit'){
+      if(route.startsWith('/catatan/edit')){
         if(editCatatan){
           if(command[0]){
             let signExcepted = [',', '.', ' ', '!', '?']
@@ -230,6 +344,11 @@ function BottomNav () {
 
   return (
     <View className='absolute self-center w-full py-3  shadow-2xl bg-[#E2E4ED] rounded-2xl bottom-7'>
+      <CustomAlert
+                message="Kode yang anda masukkan salah!"
+                visible={alertVisible}
+                onDismiss={handleDismiss}
+            />
       <View className='flex flex-row w-full'>
         {navigation.map((item, index) => (
           <React.Fragment key={index}>

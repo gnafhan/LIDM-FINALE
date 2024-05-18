@@ -1,7 +1,20 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { useContext, useEffect } from 'react'
+import { AppContext } from '../../context/AppContext'
 
 function WelcomeBanner () {
+  const { dispatch, kodeKelas } = useContext(AppContext)
+
+  useEffect(() => {
+    dispatch({
+      type: 'SET_KODE_KELAS',
+      payload: {
+        kode: ''
+      }
+    })
+  }, [])
+
   return (
     <View className='bg-[#687FEA] py-5 px-5 mt-3 rounded-[30px] flex text-[#fff]'>
       <View className='flex flex-row items-center justify-between w-full'>
@@ -30,6 +43,18 @@ function WelcomeBanner () {
       </View>
       <View className='mt-5'>
         <TextInput
+          onChangeText={ (teks) => {
+            dispatch({
+              type: 'SET_KODE_KELAS',
+              payload: {
+                kode: teks
+              }
+            })
+          }}
+          onSubmitEditing={(e) => {
+            console.log(kodeKelas)
+          }}
+          value={kodeKelas}
           style={styles.regular}
           className='px-5 py-3 pt-4 mt-3 bg-[#fff] rounded-full'
           placeholder='Masukkan kode kelas'
