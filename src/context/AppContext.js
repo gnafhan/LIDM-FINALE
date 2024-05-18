@@ -30,7 +30,23 @@ export const AppReducer = (state, action) => {
                 action.type = 'DONE'
                 return {
                     ...state
-                }      
+                } 
+        case 'SET_KODE_KELAS':
+            let kode = action.payload.kode
+            state.kodeKelas = kode
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }
+        case 'SET_KELAS':
+            let kelas = action.payload.kelas
+            state.daftarKelas = kelas
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }     
         default:
             return state
     }
@@ -40,7 +56,9 @@ const initialState = {
     pdfPage: 1,
     pdfZoom: 1,
     editCatatan: true,
-    currentCatatan: ''
+    currentCatatan: '',
+    kodeKelas: '',
+    daftarKelas: {},
 }
 
 export const AppContext = createContext()
@@ -55,7 +73,9 @@ export const AppProvider = (props) => {
                 pdfPage: state.pdfPage,
                 pdfZoom: state.pdfZoom,
                 editCatatan: state.editCatatan,
-                currentCatatan: state.currentCatatan
+                currentCatatan: state.currentCatatan,
+                kodeKelas: state.kodeKelas,
+                daftarKelas: state.daftarKelas
             }}
         >
             {props.children}
