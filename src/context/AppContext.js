@@ -47,6 +47,30 @@ export const AppReducer = (state, action) => {
             return {
                 ...state
             }     
+        case 'SET_JAWABAN':
+            let jawaban = action.payload.jawaban
+            state.currentJawaban = jawaban
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }   
+        case 'SET_DAFTAR_JAWABAN':
+            let daftarJawaban = action.payload.daftarJawaban
+            state.daftarJawaban = daftarJawaban
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }
+        case 'SET_NOMOR_KUIS':
+            let quizNumber = action.payload.quizNumber
+            state.changeQuizNumber = quizNumber
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }  
         default:
             return state
     }
@@ -59,6 +83,9 @@ const initialState = {
     currentCatatan: '',
     kodeKelas: '',
     daftarKelas: {},
+    currentJawaban: { 'questionNo': 0 },
+    daftarJawaban: {},
+    changeQuizNumber: ''
 }
 
 export const AppContext = createContext()
@@ -75,7 +102,10 @@ export const AppProvider = (props) => {
                 editCatatan: state.editCatatan,
                 currentCatatan: state.currentCatatan,
                 kodeKelas: state.kodeKelas,
-                daftarKelas: state.daftarKelas
+                daftarKelas: state.daftarKelas,
+                currentJawaban: state.currentJawaban,
+                daftarJawaban: state.daftarJawaban,
+                changeQuizNumber: state.changeQuizNumber,
             }}
         >
             {props.children}

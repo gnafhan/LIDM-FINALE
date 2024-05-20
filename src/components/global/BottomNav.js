@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { router, usePathname } from 'expo-router'
 import Voice from '@react-native-voice/voice'
@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import CustomAlert from '../home/CustomAlert'
 
 function BottomNav () {
-  const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan, kodeKelas, daftarKelas } = useContext(AppContext)
+  const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan, kodeKelas, daftarKelas, currentJawaban, daftarJawaban, changeQuizNumber } = useContext(AppContext)
   const [alertVisible, setAlertVisible] = useState(false);
   const [microphone, setMicrophone] = useState(true)
   const [command, setCommand] = useState([])
@@ -71,7 +71,7 @@ function BottomNav () {
 
   useEffect(() => {
     getData()
-
+    
     setTimeout(()=>{
       startSpeech()
       setMicrophone(false)
@@ -131,7 +131,8 @@ function BottomNav () {
           namaKelas = namaKelas.replace('valid', '').replace('falit', '').replace('pelit', '')
           namaKelas = namaKelas.trim().toLowerCase()
           if(daftarKelas.hasOwnProperty(namaKelas)){
-            router.push(`/kelas/${daftarKelas[namaKelas].id}`)
+            console.log(daftarKelas[namaKelas])
+            router.push(`/kelas/${daftarKelas[namaKelas][1]}`)
           }
         }
       }
@@ -145,17 +146,13 @@ function BottomNav () {
           modulRaw = modulRaw.trim().split(' ')
           let modulNumber = modulRaw[0]
           let modulName = modulRaw.slice(1).join(' ')
-          console.log('Awal : ' + modulName)
-          console.log('Modul number : ' + modulNumber)
-          console.log('Modul name : ' + modulName)
-          //router.push('/modul/baca')
+          router.push(`/modul/${modulNumber}`)
         }
       }
       // If user in baca modul page
-      if(route == '/modul/baca'){
+      if(route.startsWith('/modul/')){
         if(checkCommand(getCommand('scroll'), voice)){
             if(checkCommand(getCommand('scrollNaik'), voice)){
-                console.log("scroll naik")
                 dispatch({
                     type: 'SCROLL_PAGE',
                     payload: {
@@ -172,7 +169,6 @@ function BottomNav () {
                   }
               })
             } else {
-              console.log("scroll turun")
                 dispatch({
                     type: 'SCROLL_PAGE',
                     payload: {
@@ -206,7 +202,6 @@ function BottomNav () {
           catatanKode = catatanKode.replace('buka', '').replace('lihat', '').replace('catatan', '')
           catatanKode = catatanKode.replace('valid', '').replace('falit', '').replace('pelit', '')
           catatanKode = catatanKode.replace(/\s/g, '').toUpperCase()
-          console.log('Kode catatan : ' + catatanKode)
           if((myCatatan ? myCatatan : {}).hasOwnProperty(catatanKode)){
             router.push(`/catatan/edit/${catatanKode}`)
           } else {
@@ -264,7 +259,6 @@ function BottomNav () {
               }
             })
           } else if(checkCommand(getCommand('deleteLastLine'), voice)){
-            console.log(currentCatatan)
             let editedCatatan = currentCatatan.split("<br>")
             editedCatatan.pop()
             editedCatatan = editedCatatan.join("<br>")
@@ -287,6 +281,8 @@ function BottomNav () {
           }
         }
       }
+
+      // If user in quiz page
       if(route == '/quiz'){
         if(checkCommand(getCommand('openQuiz'), voice)){
           let quizRaw = command[0].toLowerCase()
@@ -294,11 +290,55 @@ function BottomNav () {
           quizRaw = quizRaw.replace('valid', '').replace('falit', '').replace('pelit', '')
           quizRaw = quizRaw.trim().split(' ')
           let quizNumber = quizRaw[0]
-          let quizName = quizRaw.slice(1).join(' ')
-          console.log('Awal : ' + quizRaw)
-          console.log('Quiz number : ' + quizNumber)
-          console.log('Quiz name : ' + quizName)
-          // route.push('/quiz/1)
+          router.push('/quiz/' + quizNumber)
+        }
+      }
+      if(route.startsWith('/quiz/')){
+        if(checkCommand(getCommand('pilihJawaban'), voice)){
+          let jawabRaw = command[0].toLowerCase()
+          jawabRaw = jawabRaw.replace('pilih', '').replace('jawab', '').replace('jawaban', '')
+          jawabRaw = jawabRaw.replace('valid', '').replace('falit', '').replace('pelit', '')
+          jawabRaw = jawabRaw.trim().split(' ')
+          let jawabanUser = jawabRaw[jawabRaw.length - 1].toUpperCase()
+          if(['A', 'B', 'C', 'D', 'E', 'F'].includes(jawabanUser)){
+            if(currentJawaban.hasOwnProperty(jawabanUser)){
+              let currentQuizId = route.split("/")
+              currentQuizId = currentQuizId[currentQuizId.length - 1]
+              let newDaftarJawaban = { ...daftarJawaban }
+              newDaftarJawaban[currentQuizId][currentJawaban['questionNo'] - 1] = currentJawaban[jawabanUser]
+              dispatch({
+                type: 'SET_DAFTAR_JAWABAN',
+                payload: {
+                  daftarJawaban: newDaftarJawaban
+                }
+              })
+            }
+          }
+        } else if(checkCommand(getCommand('nextNumber'), voice)){
+          dispatch({
+            type: 'SET_NOMOR_KUIS',
+            payload: {
+              quizNumber: 'next'
+            }
+          })
+        } else if(checkCommand(getCommand('previousNumber'), voice)){
+          dispatch({
+            type: 'SET_NOMOR_KUIS',
+            payload: {
+              quizNumber: 'previous'
+            }
+          })
+        } else if(checkCommand(getCommand('toNumber'), voice)){
+          let nomor = command[0].split(" ")
+          nomor = nomor[nomor.length - 1].trim()
+          if(!isNaN(nomor)){
+            dispatch({
+              type: 'SET_NOMOR_KUIS',
+              payload: {
+                quizNumber: nomor
+              }
+            })
+          }
         }
       }
       
@@ -386,6 +426,7 @@ function BottomNav () {
                   color={`${route == item.path || (item.path!== '/' && route.includes(item.path.substring(1))) ? '#687FEA' : 'black'}`}
                 />
                 <Text
+                style={styles.regular}
                   className={`text-xs  ${
                         route == item.path ||
                         (item.path !== '/' && route.includes(item.path.substring(1)))
@@ -439,3 +480,12 @@ const navigation = [
 ]
 
 export default BottomNav
+
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  }
+})

@@ -9,7 +9,6 @@ function CatatanItems(){
     const { dispatch } = useContext(AppContext)
     const getData = async () => {
         const catatanData = await AsyncStorage.getItem('catatan')
-        console.log(catatanData)
         setMyCatatan(JSON.parse(catatanData))
         dispatch({
             type: 'SET_DAFTAR_CATATAN',
@@ -24,8 +23,8 @@ function CatatanItems(){
     }, [])
 
     return (
-        <View className='flex flex-row flex-wrap justify-between w-full ms-4 '>
-            {Object.keys(myCatatan ? myCatatan : {}).map((item, index) => (
+        <View className='flex flex-row flex-wrap justify-between w-full ms-4 pb-10 '>
+            {Object.keys(myCatatan ? myCatatan : {}).reverse().map((item, index) => (
                   <CatatanBox key={item} id={item} teks={myCatatan[item].teks} />
               ))}
           </View>
