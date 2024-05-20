@@ -70,7 +70,7 @@ function PilihMatkul () {
         </Text>
       </View>
       <ScrollView className=' h-[45vh]'>
-        <View className='flex flex-row flex-wrap justify-between w-full ms-4 '>
+        <View className='flex flex-row flex-wrap justify-between w-full ms-4 pb-10 '>
           {data.length > 0 ? (
             data.map((item, index) => {
               const kelasku = Object.values(classes ? classes : {}).map((item) => item[0])
@@ -86,6 +86,11 @@ function PilihMatkul () {
               </Text>
             </View>
           )}
+          {
+            Object.values(classes).length > 0 ? <></> : (
+              <Text style={styles.regular} className="text-normal mt-5 ml-3">Anda belum bergabung dengan kelas apapun.</Text>
+            )
+          }
         </View>
       </ScrollView>
     </View>

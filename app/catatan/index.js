@@ -1,12 +1,8 @@
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, StyleSheet } from 'react-native'
 import CurrentPage from '../../src/components/kelas/CurrentPage'
 import Layout from '../../src/layout/layout'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-// import CatatanBox from '../../src/components/catatan/CatatanBox'
 import { router } from 'expo-router'
-// import AsyncStorage from '@react-native-async-storage/async-storage'
-// import { useEffect, useState, useContext } from 'react'
-// import { AppContext } from '../../src/context/AppContext'
 import CatatanItems from '../../src/components/catatan/CatatanItems'
 
 export default function App () {
@@ -16,7 +12,7 @@ export default function App () {
       <CurrentPage page={''} />
       <View className='flex flex-col w-full '>
         <View className='flex flex-row items-center justify-between w-full px-5'>
-          <Text className='text-xl font-semibold'>Catatan Saya</Text>
+          <Text style={styles.medium} className='text-xl font-semibold'>Catatan Saya</Text>
           <FontAwesome5Icon
             onPress={() => router.push('/catatan/edit/create')}
             name='plus'
@@ -41,14 +37,11 @@ export default function App () {
   )
 }
 
-// const data = {
-//   'AGS81': {
-//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
-//   },
-//   'AGVV81': {
-//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
-//   },
-//   'AGAA81': {
-//     teks: 'Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscingdolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit.Lorem ipsum dolor sit , consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. consectetur adipiscing ametelit. Donec nec odio vitae nunc. Donec nec odio vitae nunc.  Donec nec odio vitae nunc. Donec nec odio vitae nunc. Donec nec odio vitae nunc.'
-//   }
-// }
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  }
+})

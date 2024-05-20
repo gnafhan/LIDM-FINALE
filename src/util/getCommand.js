@@ -1,7 +1,7 @@
 const commands = {
     'valid': ["valid", "falit", "pelit"],
     'gantiHalaman': ["halaman"],
-    'back': ["kembali", "back", "bek", "sebelumnya", "bag", "bad"],
+    'back': ["kembali", "back", "bek", "bag", "bad"],
     'scroll': ["scroll", "skrol", "gulir", "scrol"],
     'scrollNaik': ["naik", "atas", "night"],
     'scrollTo': ["ke halaman", "menuju"],
@@ -21,6 +21,10 @@ const commands = {
     'kodeKelas': ['masukkan kode'],
     'enterKode': ['enter', 'submit', 'kirim'],
     'masukKelas': ['masuk kelas', 'buka kelas'],
+    'pilihJawaban': ['pilih', 'jawab'],
+    'nextNumber': ['selanjutnya', 'next'],
+    'previousNumber': ['sebelumnya', 'previous'],
+    'toNumber': ['ke nomor'],
     'halaman': {
         "home": ["beranda", "home", "hom"],
         "modul": ["modul", "module"],

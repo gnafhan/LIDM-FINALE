@@ -1,19 +1,19 @@
 import { router } from 'expo-router'
 import React, { useRef } from 'react'
-import { DrawerLayoutAndroid, Text, View } from 'react-native'
+import { DrawerLayoutAndroid, Text, View, StyleSheet } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import Number from './Number'
 
-function Drawer ({ children }) {
+function Drawer ({ children, questions, isActive, goTo }) {
   const drawer = useRef(null)
   const navigationView = () => (
     <View className='flex flex-col w-full px-4 '>
       <View className='flex flex-row items-center justify-center w-full py-2 '>
-        <Text className='mt-3 ml-2 text-lg font-bold text-primary'>SOAL</Text>
+        <Text style={styles.regular} className='mt-3 ml-2 text-lg font-bold text-primary'>SOAL</Text>
       </View>
       <View className='flex flex-row flex-wrap w-full gap-4 ml-[-5px] mt-2'>
-        {numbers.map((item, index) => (
-          <Number key={index} number={index + 1} isActive={index == 0} />
+        {questions.map((item, index) => (
+          <Number key={index} number={index + 1} isActive={index+1 == isActive} goTo={goTo} />
         ))}
       </View>
     </View>
@@ -36,7 +36,7 @@ function Drawer ({ children }) {
           size={25}
           name='arrow-left'
         />
-        <Text className='text-lg font-bold'>Quiz</Text>
+        <Text style={styles.bold} className='text-lg'>Quiz</Text>
         <FontAwesome5Icon
           style={{ marginRight: 5, marginBottom: 1 }}
           size={25}
@@ -49,6 +49,16 @@ function Drawer ({ children }) {
   )
 }
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-
 export default Drawer
+
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  },
+  bold: {
+    fontFamily: 'Poppins_600SemiBold'
+  }
+})
