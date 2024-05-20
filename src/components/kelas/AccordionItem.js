@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 export const AccordionItem = ({ type, name }) => {
@@ -47,7 +47,7 @@ export const AccordionItem = ({ type, name }) => {
             }}
             solid={false}
           />
-          <Text className='text-[16px] font-semibold text-md'>
+          <Text style={styles.bold} className='text-[16px] font-semibold text-md'>
             Modul 1 - Indomie Seleraku
           </Text>
         </View>
@@ -55,3 +55,15 @@ export const AccordionItem = ({ type, name }) => {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  },
+  bold: {
+    fontFamily: 'Poppins_600SemiBold'
+  }
+})

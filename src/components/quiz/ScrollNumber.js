@@ -2,12 +2,12 @@ import React from 'react'
 import { ScrollView, View } from 'react-native'
 import Number from './Number'
 
-function ScrollNumber () {
+function ScrollNumber ({ questions, isActive, goTo }) {
   return (
     <ScrollView horizontal className='max-h-[100px]'>
       <View className='flex flex-row mt-3 max-h-[83px]'>
-        {numbers.map((number, index) => (
-          <Number key={index} number={number} isActive={index === 0} />
+        {questions.map((number, index) => (
+          <Number key={index} number={index+1} isActive={index+1 === isActive} goTo={goTo} />
         ))}
       </View>
     </ScrollView>
