@@ -1,6 +1,6 @@
 import { router } from 'expo-router'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const CurrentPage = ({ page }) => {
@@ -15,7 +15,7 @@ const CurrentPage = ({ page }) => {
         size={25}
         name='arrow-left'
       />
-      <Text className='text-lg font-bold'>{page}</Text>
+      <Text style={styles.bold} className='text-lg'>{page}</Text>
       <FontAwesome5Icon
         style={{ marginRight: 5, marginBottom: 1, color: 'black' }}
         size={25}
@@ -26,3 +26,15 @@ const CurrentPage = ({ page }) => {
 }
 
 export default CurrentPage
+
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  },
+  bold: {
+    fontFamily: 'Poppins_600SemiBold'
+  }
+})

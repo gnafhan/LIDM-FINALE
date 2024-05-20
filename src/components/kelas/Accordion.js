@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import {
   Collapse,
   CollapseHeader,
@@ -7,6 +7,7 @@ import {
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useState } from 'react'
 import { AccordionItem } from './AccordionItem'
+import { Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 
 export const Accordion = ({ data, title }) => {
   const [isCollapsed, setIsCollapsed] = useState(true)
@@ -21,7 +22,7 @@ export const Accordion = ({ data, title }) => {
           style={{ zIndex: 10 }}
           className='flex flex-row items-center justify-between px-3 py-3 rounded-xl bg-primary'
         >
-          <Text className='text-xl text-white'>{title}</Text>
+          <Text style={styles.regular} className='text-xl text-white'>{title}</Text>
           <FontAwesome5Icon
             size={20}
             name={isCollapsed ? 'chevron-down' : 'chevron-up'}
@@ -37,7 +38,7 @@ export const Accordion = ({ data, title }) => {
             ))
           ) : (
             <View className='flex w-full h-[50vh] justify-center items-center'>
-              <Text className='text-lg text-center '>Data tidak ditemukan</Text>
+              <Text  style={styles.bold} className='text-lg text-center '>Data tidak ditemukan</Text>
             </View>
           )}
         </View>
@@ -45,3 +46,15 @@ export const Accordion = ({ data, title }) => {
     </Collapse>
   )
 }
+
+const styles = StyleSheet.create({
+  medium: {
+    fontFamily: 'Poppins_500Medium'
+  },
+  regular: {
+    fontFamily: 'Poppins_400Regular'
+  },
+  bold: {
+    fontFamily: 'Poppins_600SemiBold'
+  }
+})
