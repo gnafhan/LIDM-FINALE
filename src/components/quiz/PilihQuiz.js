@@ -7,7 +7,7 @@ import fetchKelas from '../../util/home/fetchKelas'
 import { useQuery } from '@tanstack/react-query'
 import Loading from '../global/Loading'
 
-const PilihQuiz = ({ myClass }) => {
+const PilihQuiz = ({ myClass, myQuiz }) => {
     const { isPending, isError, data, error } = useQuery({ queryKey: ['kelas'], queryFn: fetchKelas })
     const [totalQuiz, setTotalQuiz] = useState(0)
     const [totalQuizDone, setTotalQuizDone] = useState(0)
@@ -88,8 +88,11 @@ const PilihQuiz = ({ myClass }) => {
                         data.map((item, index) => {
                             if(myClass.includes(item.id)){
                                 if(item.attributes.quizzes.data.length > 0){
-                                    let quizData = item.attributes.quizzes.data
-                                    let doneQuiz = quizData.filter((item) => item.attributes.is_done == true)
+                                    let doneQuiz = Object.values(myQuiz).filter((item, index) => item["is_done"] == true)
+                                    doneQuiz = doneQuiz.map((x, i) => {
+                                        let dataItem = item.attributes.quizzes.data.filter((y) => y.id == x["id"] )[0]
+                                        return {...x, ...dataItem}
+                                    })
                                     if(doneQuiz.length > 0){
                                         if(!quizDone){
                                             setQuizDone(true)
@@ -118,7 +121,18 @@ const PilihQuiz = ({ myClass }) => {
                             if(myClass.includes(item.id)){
                                 if(item.attributes.quizzes.data.length > 0){
                                     let quizData = item.attributes.quizzes.data
-                                    let notDoneQuiz = quizData.filter((item) => item.attributes.is_done == false)
+                                    //let notDoneQuiz = quizData.filter((item) => item.attributes.is_done == false)
+                                    let doneQuiz = Object.values(myQuiz).filter((item, index) => item["is_done"] == true)
+                                    let doneQuizId = doneQuiz.map((item) => parseInt(item.id))
+                                    let notDoneQuiz = quizData.filter((item) => !doneQuizId.includes(item.id))
+                                    notDoneQuiz = notDoneQuiz.map((item) => {
+                                        return {
+                                            id: item.id,
+                                            is_done: false,
+                                            score: 0,
+                                            attributes: item.attributes
+                                        }
+                                    })
                                     if(notDoneQuiz.length > 0){
                                         if(!quizNotDone){
                                             setQuizNotDone(true)

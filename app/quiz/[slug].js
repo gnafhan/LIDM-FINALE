@@ -1,38 +1,67 @@
 import Layout from '../../src/layout/layout'
-import { useEffect, useMemo, useState } from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { useEffect, useState } from 'react'
+import { router, useLocalSearchParams } from 'expo-router'
 import PilihQuestion from '../../src/components/quiz/PilihQuestion'
 import Loading from '../../src/components/global/Loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { View } from 'react-native'
+import CurrentPage from '../../src/components/kelas/CurrentPage'
+import CustomAlert from '../../src/components/home/CustomAlert'
 
 export default function App () {
   const { slug } = useLocalSearchParams()
   const [isLoading, setIsLoading] = useState(true)
   const [myQuiz, setMyQuiz] = useState({})
+  const [alertVisible, setAlertVisible] = useState(false)
 
   const getData = async () => {
     const quizData = await AsyncStorage.getItem('quizzes')
     let quizDataNew = JSON.parse(quizData)
     if (quizData) {
       if(!quizDataNew.hasOwnProperty(slug)){
-        quizDataNew[slug] = new Array(500).fill(0)
-      } else {
-        if(quizDataNew[slug].length < 1){
-          quizDataNew[slug] = new Array(500).fill(0)
+        quizDataNew[slug] = {
+          answers: new Array(500).fill(0),
+          is_done: false,
+          score: 0,
+          id: slug
         }
       }
       setMyQuiz(quizDataNew)
     } else {
       if(quizData == null){
-        AsyncStorage.setItem('quizzes', JSON.stringify({[slug]: new Array(500).fill(0)}))
+        AsyncStorage.setItem('quizzes', JSON.stringify({
+          [slug]: {
+            answers: new Array(500).fill(0),
+            is_done: false,
+            score: 0,
+            id: slug
+          }
+        }))
       }
     }
     setIsLoading(false)
+  }
+  const showAlert = () => {
+    setAlertVisible(true)
+  }
+
+  const handleDismiss = () => {
+    setAlertVisible(false)
   }
 
   useEffect(() => {
     getData()
   }, [])
+
+  useEffect(() => {
+    if (!isLoading && myQuiz[slug] && myQuiz[slug].is_done) {
+      showAlert()
+      const timer = setTimeout(() => {
+        router.back()
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoading, myQuiz, slug])
 
   if (isLoading) {
     return (
@@ -43,7 +72,12 @@ export default function App () {
 
   return (
     <Layout>
-        <PilihQuestion quizId={slug} quizData={myQuiz} />
+        { myQuiz[slug]["is_done"] ? <CurrentPage page={'Quiz'} /> : <PilihQuestion quizId={slug} quizData={myQuiz} />}
+        <CustomAlert
+            message="Quiz telah berakhir!"
+            visible={alertVisible}
+            onDismiss={handleDismiss}
+        />
     </Layout>
   )
 }

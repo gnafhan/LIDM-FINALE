@@ -10,8 +10,9 @@ import AccordionItemModul from './AccordionItemModul'
 import { useQuery } from '@tanstack/react-query'
 import fetchModul from '../../util/modul/fetchModul'
 import Loading from '../global/Loading'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const AccordionModul = ({myModules, title}) => {
+const AccordionModul = ({myModules, title, doneModules}) => {
   const [isCollapsed, setIsCollapsed] = useState(true)
   const {isPending, isError, data, error} = useQuery({queryKey: ['modul'], queryFn: fetchModul})
 
@@ -49,7 +50,17 @@ const AccordionModul = ({myModules, title}) => {
       <CollapseBody style={{ paddingHorizontal: 10 }}>
         {data.map((item, index) => {
             if(myModules.includes(item.id)){
-              return <AccordionItemModul key={index} id={item.id} source={item.attributes.file.data.attributes.url} title={item.attributes.module_title} isDone={item.attributes.is_done} tanggal={new Date(item.attributes.createdAt)} />
+              let is_done = false
+              if(doneModules[item.id]){
+                if(doneModules[item.id]["is_done"] == true){
+                  is_done = true
+                }
+              } else {
+                let newDoneModules = {...doneModules}
+                newDoneModules[item.id] = {is_done: false}
+                AsyncStorage.setItem("modules", JSON.stringify(newDoneModules))
+              }
+              return <AccordionItemModul key={index} id={item.id} source={item.attributes.file.data.attributes.url} title={item.attributes.module_title} isDone={is_done} tanggal={new Date(item.attributes.createdAt)} />
             }
         })}
       </CollapseBody>

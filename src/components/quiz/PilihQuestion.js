@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import fetchQuestions from '../../util/quiz/fetchQuestions'
 import Loading from '../global/Loading'
 import { RadioGroup } from 'react-native-radio-buttons-group'
-import { useState, useMemo, useEffect, useContext } from 'react'
+import { useState, useMemo, useEffect, useContext, useRef } from 'react'
 import Drawer from './Drawer'
 import ScrollNumber from './ScrollNumber'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -20,7 +20,10 @@ const PilihQuestion = ({ quizId, quizData }) => {
     const [selectedId, setSelectedId] = useState()
     const [questionsData, setQuestionsData] = useState([])
     const [currentQuestion, setCurrentQuestion] = useState(1)
-    const [currentAnswers, setCurrentAnswers] = useState(quizData[quizId] ? quizData[quizId] : [])
+    const currentQuestionRef = useRef() 
+    const questionsDataRef = useRef() 
+    const [currentAnswers, setCurrentAnswers] = useState(quizData[quizId] ? quizData[quizId]["answers"] : [])
+    const [correctAnswers, setCorrectAnswers] = useState([])
     const [nowAnswer, setNowAnswer] = useState([])
     const { dispatch, currentJawaban, daftarJawaban, changeQuizNumber } = useContext(AppContext)
     const [alertVisible, setAlertVisible] = useState(false)
@@ -42,9 +45,27 @@ const PilihQuestion = ({ quizId, quizData }) => {
         }
       })
     }
+    const handleSubmit = () => {
+      let myAnswer = currentAnswers.slice(0, questionsData.length)
+      let checkAnswers = myAnswer.map((item, index) => item == correctAnswers[index])
+      let score = parseInt((checkAnswers.filter((item) => item).length / questionsData.length) * 100)
+      let newQuizData = {...quizData}
+      let finalQuizData = {
+        answers: currentAnswers,
+        id: quizId,
+        is_done: true,
+        score: score
+      }
+      newQuizData[quizId] = finalQuizData
+      AsyncStorage.setItem('quizzes', JSON.stringify(newQuizData))
+      router.replace('/quiz')
+    }
     const goToQuestion = (question) => {
-      question = parseInt(question)
-      if( (question > 0) && (question <= questionsData.length)){
+      if((question == 'submit') && (currentQuestion == questionsData.length)){
+        handleSubmit()
+      }
+      if( (question > 0) && (question <= questionsData.length + 1)){
+        question = parseInt(question)
         setCurrentQuestion(question)
         let newQuizData = [ ...currentAnswers ]
         newQuizData[currentQuestion - 1] = selectedId ? selectedId : 0
@@ -95,6 +116,7 @@ const PilihQuestion = ({ quizId, quizData }) => {
       }
       
     }
+
     useEffect(() => {
       dispatch({
         type: 'SET_NOMOR_KUIS',
@@ -126,11 +148,18 @@ const PilihQuestion = ({ quizId, quizData }) => {
       }
 
       return () => {
-        let newLocalData = {...quizData}
-        newLocalData[quizId] = currentAnswers
-        AsyncStorage.setItem('quizzes', JSON.stringify(newLocalData))
+        if(currentQuestionRef.current != questionsDataRef.current.length){
+          let newLocalData = {...quizData}
+          newLocalData[quizId]["answers"] = currentAnswers
+          AsyncStorage.setItem('quizzes', JSON.stringify(newLocalData))
+        }
       }
     }, [])
+
+    useEffect(() => {
+      currentQuestionRef.current = currentQuestion
+      questionsDataRef.current = questionsData
+    }, [currentQuestion, questionsData])
 
     useEffect(() => {
       if(changeQuizNumber == 'next'){
@@ -185,6 +214,8 @@ const PilihQuestion = ({ quizId, quizData }) => {
     useEffect(() => {
       if(data){
         let myData = data.filter((item, index) => item.attributes.quiz.data.id == quizId)
+        let correctAnswers = myData.map((item, index) => item.attributes.answers.data.filter((x, i) => x.attributes.is_true == true)[0].id)
+        setCorrectAnswers(correctAnswers)
         setQuestionsData(myData)
         if(myData.length > 0){
           setNowAnswer(getAnswers(myData[currentQuestion - 1])) 
@@ -257,7 +288,13 @@ const PilihQuestion = ({ quizId, quizData }) => {
                   Prev
                 </Text>
                 )  }
-                { currentQuestion == questionsData.length ? <View></View> : (
+                { currentQuestion == questionsData.length ? (
+                  (
+                    <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion('submit')}>
+                    Submit
+                  </Text>
+                  )  
+                ) : (
                   <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion(currentQuestion+1)}>
                   Next
                 </Text>
