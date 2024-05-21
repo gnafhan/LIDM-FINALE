@@ -9,7 +9,7 @@ const commands = {
     'zoomOut': ["perkecil", "zoom out"],
     'openModul': ["buka modul", "buka module", "lihat modul", "lihat module"],
     'openCatatan': ["buka catatan", "lihat catatan"],
-    'openQuiz': ["buka quiz", "lihat quiz", "buka kuis", "lihat kuis"],
+    'openQuiz': ["buka quiz", "lihat quiz", "buka kuis", "lihat kuis", "mulai kuis"],
     'startEdit': ['mulai edit', 'mulai sunting', 'start edit', 'mulai mencatat'],
     'stopEdit': ['stop edit', 'berhenti edit', 'stop sunting', 'berhenti sunting', 'berhenti mencatat'],
     'backspace': ['hapus huruf terakhir', 'hapus karakter terakhir'],

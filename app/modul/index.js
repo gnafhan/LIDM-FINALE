@@ -9,11 +9,18 @@ import Loading from '../../src/components/global/Loading'
 export default function App () {
   const [isLoading, setIsLoading] = useState(true)
   const [myClass, setMyClass] = useState({})
+  const [myModules, setMyModules] = useState({})
 
   const getData = async () => {
     const classesData = await AsyncStorage.getItem('classes')
+    const modulesData = await AsyncStorage.getItem('modules')
     if (classesData) {
       setMyClass(JSON.parse(classesData))
+    }
+    if(modulesData){
+      setMyModules(JSON.parse(modulesData))
+    } else {
+      AsyncStorage.setItem('modules', JSON.stringify({}))
     }
     setIsLoading(false)
   }
@@ -33,7 +40,7 @@ export default function App () {
   return (
     <Layout>
       <CurrentPage page={'Modul'} />
-      <PilihModul myClass={Object.values(myClass ? myClass : {}).map((item) => item[1])} />
+      <PilihModul myClass={Object.values(myClass ? myClass : {}).map((item) => item[1])} doneModules={myModules} />
     </Layout>
   )
 
