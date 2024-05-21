@@ -11,7 +11,7 @@ import CustomAlert from '../home/CustomAlert'
 
 function BottomNav () {
   const { dispatch, pdfPage, pdfZoom, editCatatan, currentCatatan, kodeKelas, daftarKelas, currentJawaban, daftarJawaban, changeQuizNumber } = useContext(AppContext)
-  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false)
   const [microphone, setMicrophone] = useState(true)
   const [command, setCommand] = useState([])
   const [myClass, setMyClass] = useState({})
@@ -138,7 +138,7 @@ function BottomNav () {
       }
 
       // If user in modul page
-      if(route == '/modul'){
+      if((route == '/modul') || (route.startsWith('/kelas/'))){
         if(checkCommand(getCommand('openModul'), voice)){
           let modulRaw = command[0].toLowerCase()
           modulRaw = modulRaw.replace('buka', '').replace('lihat', '').replace('modul', '').replace('module', '')
@@ -283,10 +283,10 @@ function BottomNav () {
       }
 
       // If user in quiz page
-      if(route == '/quiz'){
+      if((route == '/quiz') || (route.startsWith('/kelas/'))){
         if(checkCommand(getCommand('openQuiz'), voice)){
           let quizRaw = command[0].toLowerCase()
-          quizRaw = quizRaw.replace('buka', '').replace('lihat', '').replace('quiz', '').replace('kuis', '')
+          quizRaw = quizRaw.replace('buka', '').replace('lihat', '').replace('quiz', '').replace('kuis', '').replace('mulai', '')
           quizRaw = quizRaw.replace('valid', '').replace('falit', '').replace('pelit', '')
           quizRaw = quizRaw.trim().split(' ')
           let quizNumber = quizRaw[0]
@@ -339,6 +339,13 @@ function BottomNav () {
               }
             })
           }
+        } else if(checkCommand(getCommand('enterKode'), voice)){
+          dispatch({
+            type: 'SET_NOMOR_KUIS',
+            payload: {
+              quizNumber: 'submit'
+            }
+          })
         }
       }
       

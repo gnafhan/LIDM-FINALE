@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from 'react'
 import AccordionQuizItem from './AccordionQuizItem'
 
-const AccordionQuiz = ({data, title, passTotalQuiz, passTotalQuizDone}) => {
+const AccordionQuiz = ({data, title, passTotalQuiz, passTotalQuizDone, myQuiz}) => {
   const [isCollapsed, setIsCollapsed] = useState(true)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AccordionQuiz = ({data, title, passTotalQuiz, passTotalQuizDone}) => {
       <CollapseBody style={{ paddingHorizontal: 10 }}>
         {data.map((item, index) => {
           let quiz = item.attributes
-          return <AccordionQuizItem key={index} id={item.id} title={quiz.quiz_title} isDone={quiz.is_done} nilai={quiz.mark ? quiz.mark : 0} jumlah={10} />
+          return <AccordionQuizItem key={index} id={item.id} title={quiz.quiz_title} isDone={item.is_done} nilai={item.score ? item.score : 0} jumlah={10} />
         })}
       </CollapseBody>
     </Collapse>

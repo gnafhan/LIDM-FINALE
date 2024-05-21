@@ -1,18 +1,13 @@
 import { ScrollView, Text, View, StyleSheet } from 'react-native'
-import biologi from '../../../assets/biologi.png'
 import { useQuery } from '@tanstack/react-query'
 import fetchKelas from '../../util/home/fetchKelas'
 import Loading from '../global/Loading'
 import { Image } from 'expo-image'
 import { useEffect } from 'react'
-
+import { Accordion } from './Accordion'
 
 const KelasHeader = ({ classId }) => {
     const { isPending, isError, data, error } = useQuery({queryKey: ['kelas'], queryFn: fetchKelas})
-
-    useEffect(() => {
-      console.log(classId)
-    }, [])
 
     if (isPending) {
       return(
@@ -47,7 +42,33 @@ const KelasHeader = ({ classId }) => {
                     <View>
                     <Image className='w-36 h-36' source={process.env.EXPO_PUBLIC_BE_URL + item.attributes.gambar_kelas.data.attributes.url} alt='aa' />
                     </View>
-                </View>
+                  </View>
+                )
+              }
+            })
+          }
+          {
+            data.map((item, index) => {
+              if(item.id == classId){
+                let itemsData = Object.keys(item.attributes).map((x, n) => {
+                   if((x == "modules") || (x=="quizzes")){
+                    let theData = item.attributes[`${x}`].data
+                    theData = theData.map((item, index) => {
+                      return {id: item.id, name: x == "modules" ? item.attributes["module_title"] : item.attributes["quiz_title"],...item.attributes, type: x}
+                    })
+                    return theData
+                   } 
+                }).filter((item, index) => item)
+                itemsData =  itemsData.length > 1 ? [...itemsData[0], ...itemsData[1]] : []
+                return (
+                  <View key={index} className='relative min-h-[55vh] max-h-[62vh]'>
+                    <View className='bg-[#7A87C4] rounded-[30px] opacity-20 w-full min-h-[55vh] h-full absolute top-0'></View>
+                    <ScrollView>
+                      <View className='flex gap-3 mx-5 mt-7'>
+                        <Accordion title='Pertemuan 1: Pendahuluan' data={itemsData} />
+                      </View>
+                    </ScrollView>
+                  </View>
                 )
               }
             })
