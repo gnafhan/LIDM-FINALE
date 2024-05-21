@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query'
 import fetchKelas from '../../util/home/fetchKelas'
 import Loading from '../global/Loading'
 
-function PilihModul({ myClass }){
+function PilihModul({ myClass, doneModules }){
     const {isPending, isError, data, error} = useQuery({queryKey: ['kelas'], queryFn: fetchKelas})
 
     if (isPending) {
@@ -58,12 +58,12 @@ function PilihModul({ myClass }){
                     solid={false}
                 />
                 <Text style={styles.regular} className='mt-2 text-lg text-secondary'>
-                    0/{ data.map((item, index) => {
+                    { Object.values(doneModules).filter((item, index) => item["is_done"] == true).length }/{ data.map((item, index) => {
                             if(myClass.includes(item.id)){
                                 const myModules = item.attributes.modules.data.map((item) => item.id)
-                                return 1
+                                return true
                             }
-                        }).length } Modul
+                        }).filter((item) => item).length } Modul
                     </Text>
                 </View>
                 </View>
@@ -79,7 +79,7 @@ function PilihModul({ myClass }){
                         data.map((item, index) => {
                             if(myClass.includes(item.id)){
                                 const myModules = item.attributes.modules.data.map((item) => item.id)
-                                return <AccordionModul  key={index} title={item.attributes.nama_kelas} myModules={myModules} />
+                                return <AccordionModul  key={index} title={item.attributes.nama_kelas} myModules={myModules} doneModules={doneModules} />
                             }
                         })
                     }
