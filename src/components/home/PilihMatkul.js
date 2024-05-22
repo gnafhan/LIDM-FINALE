@@ -20,7 +20,9 @@ function PilihMatkul () {
   const [ classes, setClasses ] = useState({})
   const getData = async () => {
       const data = await AsyncStorage.getItem('classes')
-      setClasses(JSON.parse(data))
+      if(data){
+        setClasses(JSON.parse(data))
+      }
   }
 
   useEffect(() => {
