@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native'
 import WelcomeBanner from '../src/components/home/WelcomeBanner'
 import PilihMatkul from '../src/components/home/PilihMatkul'
 import Layout from '../src/layout/layout'
