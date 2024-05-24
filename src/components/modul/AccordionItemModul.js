@@ -9,7 +9,7 @@ const AccordionItemModul = ({ id, title, jumlah, isDone, nilai, tanggal }) => {
     return (
       <View onTouchEndCapture={()=> router.push(`/modul/${id}`)} className=' rounded-3xl mt-3 border-[#0EDE16] bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between items-center'>
         <View className='flex-col flex w-[70%]'>
-          <Text style={styles.bold} className='text-base'>Modul {id} - {title}</Text>
+          <Text style={styles.bold} className='text-lg'>Modul {id} - {title}</Text>
           <Text style={styles.regular} className='text-sm text-secondary'>{formatDate(tanggal)}</Text>
         </View>
         <View className='bg-[#0EDE16] py-2 px-5 rounded-full flex items-center justify-center'>
@@ -21,7 +21,7 @@ const AccordionItemModul = ({ id, title, jumlah, isDone, nilai, tanggal }) => {
   return (
     <View onTouchEndCapture={()=> router.push(`/modul/${id}`)} className=' rounded-3xl mt-2 border-primary bg bg-white border-2 border-solid pl-6 pr-3 py-2  flex w-full flex-row justify-between items-center'>
       <View className='flex-col flex w-[70%]'>
-        <Text style={styles.bold} className='text-base'>Modul {id} - {title}</Text>
+        <Text style={styles.bold} className='text-lg'>Modul {id} - {title}</Text>
         <Text style={styles.regular} className='text-sm text-secondary'>{formatDate(tanggal)}</Text>
       </View>
       <View className='border-primary border-2 border-solid px-7 rounded-full flex items-center justify-center py-2'>
