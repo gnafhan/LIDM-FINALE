@@ -1,5 +1,6 @@
 const commands = {
-    'valid': ["valid", "falit", "pelit"],
+    'valid': ["valid valid", "falit falit", "pelit pelit", "balik balik", "balik-balik"],
+    'stop': ["stop", "berhenti"],
     'gantiHalaman': ["halaman"],
     'back': ["kembali", "back", "bek", "bag", "bad"],
     'scroll': ["scroll", "skrol", "gulir", "scrol"],
@@ -8,6 +9,7 @@ const commands = {
     'zoomIn': ["perbesar", "zoom in"],
     'zoomOut': ["perkecil", "zoom out"],
     'openModul': ["buka modul", "buka module", "lihat modul", "lihat module"],
+    'openPanduan': ["buka panduan", "lihat panduan"],
     'openCatatan': ["buka catatan", "lihat catatan"],
     'openQuiz': ["buka quiz", "lihat quiz", "buka kuis", "lihat kuis", "mulai kuis"],
     'startEdit': ['mulai edit', 'mulai sunting', 'start edit', 'mulai mencatat'],
@@ -24,7 +26,10 @@ const commands = {
     'pilihJawaban': ['pilih', 'jawab'],
     'nextNumber': ['selanjutnya', 'next'],
     'previousNumber': ['sebelumnya', 'previous'],
+    'skipNumber': ['lewati', 'skip'],
+    'close': ['close', 'tutup'],
     'toNumber': ['ke nomor'],
+    'cancel': ['cancel', 'batalkan'],
     'halaman': {
         "home": ["beranda", "home", "hom"],
         "modul": ["modul", "module"],

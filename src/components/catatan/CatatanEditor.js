@@ -59,6 +59,7 @@ function CatatanEditor({ id,  initialCatatan }){
 
     return (
         <RichEditor
+            minimumFontSize={22}
             ref={richEditor}
             initialFocus={true}
             initialContentHTML={currentCatatan}

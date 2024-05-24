@@ -15,8 +15,8 @@ function CatatanBox({ id, teks }){
               className='w-[48%] h-[100%] aspect-square justify-between pt-3 pb-7 px-4 bg-white shadow-md  mt-4 rounded-[17px] '
             >
               <View>
-                <View className='bg-slate-200 w-[55px] flex justify-center items-center rounded-full'>
-                    <Text style={styles.regular} className='text-xs'>{id}</Text>
+                <View className='bg-slate-200 flex justify-center items-center rounded-full'>
+                    <Text style={styles.regular} className='text-lg'>{id}</Text>
                 </View>
                 <Text style={styles.bold} className='text-xl'>{ teks.substring(0, 12)  }</Text>
                 <Text style={styles.regular} className='text-sm text-[#7F7F82] max-h-[80%] '>

@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../../context/AppContext'
 import { router } from 'expo-router'
 import CustomAlert from '../home/CustomAlert'
+import NameAlert from './NameAlert'
 
 const PilihQuestion = ({ quizId, quizData }) => {
     const { isPending, isError, data, error }= useQuery({queryKey: ['question'], queryFn: fetchQuestions})
@@ -25,8 +26,25 @@ const PilihQuestion = ({ quizId, quizData }) => {
     const [currentAnswers, setCurrentAnswers] = useState(quizData[quizId] ? quizData[quizId]["answers"] : [])
     const [correctAnswers, setCorrectAnswers] = useState([])
     const [nowAnswer, setNowAnswer] = useState([])
-    const { dispatch, currentJawaban, daftarJawaban, changeQuizNumber } = useContext(AppContext)
+    const { dispatch, currentJawaban, daftarJawaban, changeQuizNumber, namaFinal } = useContext(AppContext)
     const [alertVisible, setAlertVisible] = useState(false)
+    const [nameVisible, setNameVisible] = useState(false)
+
+    const showName = () => {
+      if(changeQuizNumber != 'submit'){
+        dispatch({
+          type: 'SET_NOMOR_KUIS',
+          payload: {
+            quizNumber: 'submit'
+          }
+        })
+      }
+      setNameVisible(true)
+    }
+  
+    const closeName = () => {
+      setNameVisible(false)
+    }
 
     const showAlert = () => {
       setAlertVisible(true)
@@ -54,7 +72,8 @@ const PilihQuestion = ({ quizId, quizData }) => {
         answers: currentAnswers,
         id: quizId,
         is_done: true,
-        score: score
+        score: score,
+        nama_murid: namaFinal ? namaFinal.trim() : 'Anonymous'
       }
       newQuizData[quizId] = finalQuizData
       AsyncStorage.setItem('quizzes', JSON.stringify(newQuizData))
@@ -62,7 +81,13 @@ const PilihQuestion = ({ quizId, quizData }) => {
     }
     const goToQuestion = (question) => {
       if((question == 'submit') && (currentQuestion == questionsData.length)){
+        showName()
+      }
+      if((question == 'submitFinal') && (currentQuestion == questionsData.length)){
         handleSubmit()
+      }
+      if((question == 'cancel') && (currentQuestion == questionsData.length)){
+        closeName()
       }
       if( (question > 0) && (question <= questionsData.length + 1)){
         question = parseInt(question)
@@ -251,11 +276,12 @@ const PilihQuestion = ({ quizId, quizData }) => {
                 visible={alertVisible}
                 onDismiss={handleDismiss}
             />
+            <NameAlert visible={nameVisible} onClose={closeName} onSubmit={() => goToQuestion('submitFinal')} />
           { questionsData.length < 1 ? <></> : (
             <View className='flex flex-col px-5 py-5 rounded-2xl bg-[#E2E4ED] justify-between min-h-[60vh]'>
             <View className='flex flex-col'>
                 <Text style={styles.regular} className='text-normal text-secondary'>Pertanyaan {currentQuestion}</Text>
-                <Text style={styles.bold} className='mt-3 text-lg font-semibold text-black'>
+                <Text style={styles.bold} className='mt-3 text-xl font-semibold text-black'>
                   {questionsData[currentQuestion-1].attributes.question}
                 </Text>
                 <View className='flex flex-col mt-5'>
@@ -272,7 +298,7 @@ const PilihQuestion = ({ quizId, quizData }) => {
                       color: 'black',
                       borderColor: '#687FEA',
                       borderBlockColor: '#687FEA',
-                      fontSize: 18,
+                      fontSize: 19,
                       fontWeight: '500',
                       fontFamily: 'Poppins_500Medium'
                     }}
@@ -290,7 +316,7 @@ const PilihQuestion = ({ quizId, quizData }) => {
                 )  }
                 { currentQuestion == questionsData.length ? (
                   (
-                    <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion('submit')}>
+                  <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => showName()}>
                     Submit
                   </Text>
                   )  

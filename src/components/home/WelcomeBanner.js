@@ -4,15 +4,53 @@ import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CustomAlert from './CustomAlert'
+import Loading from '../global/Loading'
+import { router } from 'expo-router'
+import PanduanAlert from './PanduanAlert'
 
 function WelcomeBanner () {
-  const { dispatch, kodeKelas, daftarKelas } = useContext(AppContext)
+  const { dispatch, kodeKelas, daftarKelas, showPanduan } = useContext(AppContext)
   const [alertVisible, setAlertVisible] = useState(false)
+  const [myClass, setMyClass] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  const [panduanVisible, setPanduanVisible] = useState(false)
+
+  const showPanduanAlert = () => {
+    setPanduanVisible(true)
+  }
+
+  const closePanduan = () => {
+    setPanduanVisible(false)
+  }
+
+  const getData = async () => {
+    const classData = await AsyncStorage.getItem('classes')
+    if(classData){
+      setMyClass(JSON.parse(classData))
+    }
+    setIsLoading(false)
+  }
   const showAlert = () => {
     setAlertVisible(true)
   }
   const handleDismiss = () => {
     setAlertVisible(false)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  useEffect(() => {
+    if(showPanduan.startsWith('show')){
+      showPanduanAlert()
+    } else {
+      closePanduan()
+    }
+  }, [showPanduan])
+
+  if(isLoading){
+    return <Loading />
   }
 
   const submitKode = () => {
@@ -29,6 +67,7 @@ function WelcomeBanner () {
               newKelasKey = key
             }
             let newKelas = daftarKelas[newKelasKey]
+            console.log(newKelas)
             let newMyClass = { ...myClass }
             newMyClass[newKelasKey] = newKelas
             AsyncStorage.setItem('classes', JSON.stringify(newMyClass))
@@ -54,6 +93,7 @@ function WelcomeBanner () {
           visible={alertVisible}
           onDismiss={handleDismiss}
       />
+      <PanduanAlert visible={panduanVisible} onClose={closePanduan} />
       <View className='flex flex-row items-center justify-between w-full'>
         <View className='flex flex-col '>
           <Text style={styles.medium} className='text-3xl text-[#fff]'>
@@ -67,13 +107,14 @@ function WelcomeBanner () {
           <View
             style={{ borderColor: '#fff' }}
             className='items-center p-2 border-[2px] rounded-full aspect-square '
+            onTouchEndCapture={showPanduanAlert}
           >
             <FontAwesome5
               className='opacity-0'
               style={{}}
               color={'white'}
               size={20}
-              name='bell'
+              name='question'
             />
           </View>
         </View>
