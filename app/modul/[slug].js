@@ -59,7 +59,7 @@ export default function App(){
             <CurrentPage page={'Baca Modul'} />
             <FileNameBar type={'pdf'} title={fileTitle} />
             <PageNumber currentPage={currentPage} totalPage={totalPage} />
-            <View className='bg-[#687FEA] w-full h-full rounded-2xl py-8 px-5'>
+            <View className='bg-[#687FEA] w-full h-[80%] rounded-2xl py-8 px-5'>
                 <PDFView id={slug} currentPage={defineCurrentPage} totalPage={defineTotalPage} fileTitle={defineFileTitle} />
             </View>
         </Layout>

@@ -29,6 +29,16 @@ export default function App () {
       setMyQuiz(quizDataNew)
     } else {
       if(quizData == null){
+        setMyQuiz(
+          {
+            [slug]: {
+              answers: new Array(500).fill(0),
+              is_done: false,
+              score: 0,
+              id: slug
+            }
+          }
+        )
         AsyncStorage.setItem('quizzes', JSON.stringify({
           [slug]: {
             answers: new Array(500).fill(0),
@@ -54,7 +64,7 @@ export default function App () {
   }, [])
 
   useEffect(() => {
-    if (!isLoading && myQuiz[slug] && myQuiz[slug].is_done) {
+    if (!isLoading && myQuiz[slug] && (myQuiz[slug].is_done)) {
       showAlert()
       const timer = setTimeout(() => {
         router.back()

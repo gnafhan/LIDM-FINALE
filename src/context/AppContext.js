@@ -70,7 +70,39 @@ export const AppReducer = (state, action) => {
             action.type = 'DONE'
             return {
                 ...state
-            }  
+            } 
+        case 'SET_NOMOR_PANDUAN':
+            let panduanNumber = action.payload.panduanNumber
+            state.changePanduanNumber = panduanNumber
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            } 
+        case 'SET_SHOW_PANDUAN':
+            let show = action.payload.show
+            state.showPanduan = show
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            } 
+        case 'SET_NAMA':
+            let nama = action.payload.nama
+            state.namaLengkap = nama
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }
+        case 'SET_NAMA_FINAL':
+            let namaFinal = action.payload.namaFinal
+            state.namaFinal = namaFinal
+            
+            action.type = 'DONE'
+            return {
+                ...state
+            }
         default:
             return state
     }
@@ -85,7 +117,11 @@ const initialState = {
     daftarKelas: {},
     currentJawaban: { 'questionNo': 0 },
     daftarJawaban: {},
-    changeQuizNumber: ''
+    changeQuizNumber: '',
+    changePanduanNumber: '',
+    showPanduan: '',
+    namaLengkap: '',
+    namaFinal: ''
 }
 
 export const AppContext = createContext()
@@ -106,6 +142,10 @@ export const AppProvider = (props) => {
                 currentJawaban: state.currentJawaban,
                 daftarJawaban: state.daftarJawaban,
                 changeQuizNumber: state.changeQuizNumber,
+                changePanduanNumber: state.changePanduanNumber,
+                showPanduan: state.showPanduan,
+                namaLengkap: state.namaLengkap,
+                namaFinal: state.namaFinal
             }}
         >
             {props.children}

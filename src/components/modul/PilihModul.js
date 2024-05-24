@@ -8,7 +8,6 @@ import {
 import biologi from '../../../assets/biologi.png'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import AccordionModul from './AccordionModul'
-import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchKelas from '../../util/home/fetchKelas'
 import Loading from '../global/Loading'
