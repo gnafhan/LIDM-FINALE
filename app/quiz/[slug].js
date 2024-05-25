@@ -82,7 +82,12 @@ export default function App () {
 
   return (
     <Layout>
-        { myQuiz[slug]["is_done"] ? <CurrentPage page={'Quiz'} /> : <PilihQuestion quizId={slug} quizData={myQuiz} />}
+        { myQuiz[slug]["is_done"] ? (
+          <View>
+            <CurrentPage page={'Quiz'} /> 
+            <View className='h-[90%]'></View>
+          </View>
+        ): <PilihQuestion quizId={slug} quizData={myQuiz} />}
         <CustomAlert
             message="Quiz telah berakhir!"
             visible={alertVisible}
