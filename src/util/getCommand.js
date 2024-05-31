@@ -1,5 +1,5 @@
 const commands = {
-    'valid': ["valid valid", "falit falit", "pelit pelit", "balik balik", "balik-balik"],
+    'valid': ["valid valid", "pelit pelit", "balik balik", "balik-balik", "Alif Alif", "Farid Farid", "parit parit", "Walid Walid"],
     'stop': ["stop", "berhenti"],
     'gantiHalaman': ["halaman"],
     'back': ["kembali", "back", "bek", "bag", "bad"],
