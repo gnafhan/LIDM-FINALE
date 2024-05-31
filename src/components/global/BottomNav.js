@@ -9,7 +9,6 @@ import { AppContext } from '../../context/AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CustomAlert from '../home/CustomAlert'
 import AudioWave from './AudioWave'
-import PanduanAlert from '../home/PanduanAlert'
 import generateRandomId from '../../util/generateRandomId'
 
 function BottomNav () {
@@ -102,7 +101,7 @@ function BottomNav () {
     console.log(command)
     let voice = command.join(" ").toLowerCase()
 
-    if(checkCommand(getCommand('valid'), command[0] ? command[0].replace('-', '').trim() : '')){
+    if(getCommand('valid').includes(command[0])){
       setIsValid(true)
       setCommandStatus('netral')
     }
@@ -214,9 +213,49 @@ function BottomNav () {
           let modulNumber = modulRaw[0]
           let modulName = modulRaw.slice(1).join(' ')
           router.push(`/modul/${modulNumber}`)
+        } else if(checkCommand(getCommand('openPanduan'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_SHOW_PANDUAN',
+            payload: {
+              show: route + 'Show' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('nextNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Next' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('previousNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Previous' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('skipNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Skip' + generateRandomId(4)
+            }
+          })
+        }  else if(checkCommand(getCommand('close'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Close' + generateRandomId(4)
+            }
+          })
         } else {
           setCommandStatus('wrong')
-        }
+        } 
       }
       // If user in baca modul page
       if(route.startsWith('/modul/')){
@@ -283,6 +322,46 @@ function BottomNav () {
         } else if(checkCommand(getCommand('createCatatan'), voice)){
           setCommandStatus('correct')
           router.push('/catatan/edit/create')
+        } else if(checkCommand(getCommand('openPanduan'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_SHOW_PANDUAN',
+            payload: {
+              show: route + 'Show' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('nextNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Next' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('previousNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Previous' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('skipNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Skip' + generateRandomId(4)
+            }
+          })
+        }  else if(checkCommand(getCommand('close'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Close' + generateRandomId(4)
+            }
+          })
         } else {
           
         }
@@ -359,6 +438,46 @@ function BottomNav () {
                 catatan: editedCatatan
               }
             })
+          } else if(checkCommand(getCommand('openPanduan'), voice)){
+            setCommandStatus('correct')
+            dispatch({
+              type: 'SET_SHOW_PANDUAN',
+              payload: {
+                show: route + 'Show' + generateRandomId(4)
+              }
+            })
+          } else if(checkCommand(getCommand('nextNumber'), voice)){
+            setCommandStatus('correct')
+            dispatch({
+              type: 'SET_NOMOR_PANDUAN',
+              payload: {
+                panduanNumber: route + 'Next' + generateRandomId(4)
+              }
+            })
+          } else if(checkCommand(getCommand('previousNumber'), voice)){
+            setCommandStatus('correct')
+            dispatch({
+              type: 'SET_NOMOR_PANDUAN',
+              payload: {
+                panduanNumber: route + 'Previous' + generateRandomId(4)
+              }
+            })
+          } else if(checkCommand(getCommand('skipNumber'), voice)){
+            setCommandStatus('correct')
+            dispatch({
+              type: 'SET_NOMOR_PANDUAN',
+              payload: {
+                panduanNumber: route + 'Skip' + generateRandomId(4)
+              }
+            })
+          }  else if(checkCommand(getCommand('close'), voice)){
+            setCommandStatus('correct')
+            dispatch({
+              type: 'SET_NOMOR_PANDUAN',
+              payload: {
+                panduanNumber: route + 'Close' + generateRandomId(4)
+              }
+            })
           } else {
             
           }
@@ -375,6 +494,46 @@ function BottomNav () {
           quizRaw = quizRaw.trim().split(' ')
           let quizNumber = quizRaw[0]
           router.push('/quiz/' + quizNumber)
+        } else if(checkCommand(getCommand('openPanduan'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_SHOW_PANDUAN',
+            payload: {
+              show: route + 'Show' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('nextNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Next' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('previousNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Previous' + generateRandomId(4)
+            }
+          })
+        } else if(checkCommand(getCommand('skipNumber'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Skip' + generateRandomId(4)
+            }
+          })
+        }  else if(checkCommand(getCommand('close'), voice)){
+          setCommandStatus('correct')
+          dispatch({
+            type: 'SET_NOMOR_PANDUAN',
+            payload: {
+              panduanNumber: route + 'Close' + generateRandomId(4)
+            }
+          })
         } else {
           setCommandStatus('wrong')
         }
@@ -382,7 +541,8 @@ function BottomNav () {
       if(route.startsWith('/quiz/')){
         if(changeQuizNumber == 'submit'){
           if(command[0]){
-            if((command[0] != 'valid valid') && (command[0] != 'pelit pelit') && (command[0] != 'balik balik') && (command[0] != 'balik-balik') && (command[0] != 'cancel') && (command[0] != 'batalkan') && (command[0] != 'submit') && (command[0] != 'kirim')){
+            let commandLower = command[0].toLowerCase()
+            if((commandLower != 'valid valid') && (commandLower != 'pelit pelit') && (commandLower != 'balik balik')  && (commandLower != 'walid walid') && (commandLower != 'alif alif')  && (commandLower != 'parit parit')  && (commandLower != 'farid farid') && (commandLower != 'balik-balik') && (command[0] != 'cancel') && (command[0] != 'batalkan') && (command[0] != 'submit') && (command[0] != 'kirim')){
               if(command[0] == 'hapus kata terakhir'){
                 dispatch({
                   type: 'SET_NAMA',
@@ -513,7 +673,7 @@ function BottomNav () {
       if(route.startsWith('/catatan/edit')){
         if(editCatatan){
           if(command[0]){
-            if((command[0] != 'valid valid') && (command[0] != 'pelit pelit') && (command[0] != 'balik balik') && (command[0] != 'balik-balik')){
+            if((command[0] != 'valid valid') && (command[0] != 'pelit pelit') && (command[0] != 'balik balik') && (command[0] != 'balik-balik') && (command[0] != 'parit parit') && (command[0] != 'Farid Farid') && (command[0] != 'Alif Alif')  && (command[0] != 'Walid Walid')){
               let signExcepted = [',', '.', ' ', '!', '?']
               let space = signExcepted.includes(command[0]) ? '' : ' '
               dispatch({
@@ -542,7 +702,7 @@ function BottomNav () {
         }} 
         className='bg-white h-[300px] rounded-t-2xl animate-bounce py-8 px-5 items-center '
       >
-        <Text style={[{color: ((command[0] == 'valid valid') || (command[0] == 'pelit pelit') || (command[0] == 'balik balik') || (command[0] == 'balik-balik')) ? commandColor['netral'] : commandColor[commandStatus]}, styles.bold]} className='text-lg'>{((command[0] == 'valid valid') || (command[0] == 'pelit pelit') || (command[0] == 'balik balik') || (command[0] == 'balik-balik')) ? 'Ucapkan perintah anda!' : command[0]}</Text>
+        <Text style={[{color: ((command[0] == 'valid valid') || (command[0] == 'pelit pelit') || (command[0] == 'balik balik') || (command[0] == 'balik-balik') || (command[0] == 'Walid Walid') || (command[0] == 'Alif Alif') || (command[0] == 'parit parit') || (command[0] == 'Farid Farid')) ? commandColor['netral'] : commandColor[commandStatus]}, styles.bold]} className='text-lg'>{((command[0] == 'valid valid') || (command[0] == 'pelit pelit') || (command[0] == 'balik balik') ||  (command[0] == 'Walid Walid') || (command[0] == 'balik-balik') || (command[0] == 'Alif Alif') || (command[0] == 'Farid Farid') || (command[0] == 'parit parit')) ? 'Ucapkan perintah anda!' : command[0]}</Text>
         <View className='m-10'>
           <AudioWave />
         </View>
@@ -594,7 +754,7 @@ function BottomNav () {
                     className={`text-xs  ${
                           route == item.path ||
                           (item.path !== '/' && route.includes(item.path.substring(1)))
-                            ? 'text-primary font-bold'
+                            ? 'text-primary'
                             : 'text-black'
 
                            }`}
@@ -631,7 +791,7 @@ const navigation = [
     active: false
   },
   {
-    name: 'Mencatat',
+    name: 'Catatan',
     icon: 'pen',
     path: '/catatan',
     active: false

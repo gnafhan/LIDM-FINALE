@@ -35,6 +35,11 @@ const NameAlert = ({ visible, onClose, onSubmit, passName }) => {
           newNama.pop()
           newNama = newNama.join(' ')
           setNama(newNama)
+        } else  if(namaLengkap.toLowerCase().startsWith('hapus kalimat terakhir')){
+          let newNama = nama.split(".")
+          newNama.pop()
+          newNama = newNama.join(".")
+          setNama(newNama)
         } else if(namaLengkap.toLowerCase().startsWith('eja')){
           let newNama = namaLengkap.slice(3).trim()
           newNama = newNama.replace(/\s/g, '')
@@ -87,10 +92,10 @@ const NameAlert = ({ visible, onClose, onSubmit, passName }) => {
         />
           <View className='flex-row justify-between w-[100%] mt-7'>
               <TouchableOpacity className='px-5 py-3 text-lg text-center items-center text-white rounded-xl w-fit bg-white border-2 border-primary' onPress={handleClose}>
-                <Text style={styles.bold} className='text-primary text-base'>Cancel</Text>
+                <Text style={styles.bold} className='text-primary text-base'>Batalkan</Text>
               </TouchableOpacity>
               <TouchableOpacity className='px-5 py-3 text-lg  text-center items-center text-white rounded-xl w-fit bg-primary' onPress={handleSubmit}>
-                <Text style={styles.bold} className='text-white text-base'>Submit</Text>
+                <Text style={styles.bold} className='text-white text-base'>Kirim</Text>
               </TouchableOpacity>
             
           </View>

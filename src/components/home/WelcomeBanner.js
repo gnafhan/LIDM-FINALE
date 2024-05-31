@@ -13,7 +13,7 @@ function WelcomeBanner () {
   const [alertVisible, setAlertVisible] = useState(false)
   const [myClass, setMyClass] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const [panduanVisible, setPanduanVisible] = useState(false)
+  const [panduanVisible, setPanduanVisible] = useState(true)
 
   const showPanduanAlert = () => {
     setPanduanVisible(true)
@@ -25,8 +25,15 @@ function WelcomeBanner () {
 
   const getData = async () => {
     const classData = await AsyncStorage.getItem('classes')
+    const firstOpen = await AsyncStorage.getItem('first_open')
     if(classData){
       setMyClass(JSON.parse(classData))
+    }
+    if(firstOpen){
+      setPanduanVisible(false)
+    } else {
+      AsyncStorage.setItem('first_open', JSON.stringify({first_open: false}))
+      setPanduanVisible(true)
     }
     setIsLoading(false)
   }
