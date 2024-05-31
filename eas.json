@@ -8,9 +8,23 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://nier.nafhan.site/api",
+        "EXPO_PUBLIC_BE_URL": "https://nier.nafhan.site",
+        "EXPO_PUBLIC_TOKEN": "63c6da949adf38b5011ab03b42eb131091e842478a351bf41b469ab3e6c86bc9aba3323c32dff6669e1690a34271a0623cf20e26cce2fcd05ba0e757aef6af137746abbf5e8d11f07f762a0fa6b66091b8ae12cb4e5f2858a1b1cae1dce4b3c3f55ad4fddf73fdda7534391e2ed71a88397aa30105f7782a0a2c79a0a091fbcf"
+      }
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://nier.nafhan.site/api",
+        "EXPO_PUBLIC_BE_URL": "https://nier.nafhan.site",
+        "EXPO_PUBLIC_TOKEN": "63c6da949adf38b5011ab03b42eb131091e842478a351bf41b469ab3e6c86bc9aba3323c32dff6669e1690a34271a0623cf20e26cce2fcd05ba0e757aef6af137746abbf5e8d11f07f762a0fa6b66091b8ae12cb4e5f2858a1b1cae1dce4b3c3f55ad4fddf73fdda7534391e2ed71a88397aa30105f7782a0a2c79a0a091fbcf"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    }
   },
   "submit": {
     "production": {}

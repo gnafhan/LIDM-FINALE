@@ -8,7 +8,7 @@ const PanduanAlert = ({ visible, onClose }) => {
   const { dispatch, changePanduanNumber } = useContext(AppContext)
 
   const steps = [
-    'Katakan "valid-valid" untuk mulai memberi perintah.  Ucapkan "stop" / "berhenti" untuk berhenti memberi perintah.', 
+    'Ucapkan "valid-valid" untuk mulai memberi perintah.  untuk berhenti memberi perintah, ucapkan "stop" / "berhenti". Untuk melanjutkan panduan, ucapkan "selanjutnya"', 
     'Ucapkan "next" / "selanjutnya", "previous" / "sebelumnya", atau "skip" /"lewati" untuk melanjutkan konten.',
     'Untuk membuka panduan ini lagi, pergi ke halaman home dan ucapkan "buka panduan".',
     'Untuk berpindah halaman, ucapkan "pindah halaman (nama halaman)". Terdapat halaman home, modul, catatan, dan quiz. Untuk kembali, ucapkan "back" / "kembali"',
@@ -105,21 +105,21 @@ const PanduanAlert = ({ visible, onClose }) => {
           <View className='flex-row justify-between w-[100%]'>
             {currentStep > 0 && (
               <TouchableOpacity className='px-5 py-3 text-lg text-center items-center text-white rounded-xl w-fit bg-primary' onPress={handlePrevious}>
-                <Text style={styles.bold} className='text-white text-base'>Previous</Text>
+                <Text style={styles.bold} className='text-white text-sm'>Sebelumnya</Text>
               </TouchableOpacity>
             )}
             {currentStep == 0 && (
               <TouchableOpacity className='px-5 py-3 text-lg text-center items-center text-white rounded-xl w-fit bg-white border-2 border-primary' onPress={handleClose}>
-                <Text style={styles.bold} className='text-primary text-base'>Skip</Text>
+                <Text style={styles.bold} className='text-primary text-sm'>Lewati</Text>
               </TouchableOpacity>
             )}
             {currentStep < steps.length - 1 ? (
               <TouchableOpacity className='px-5 py-3 text-lg  text-center items-center text-white rounded-xl w-fit bg-primary' onPress={handleNext}>
-                <Text style={styles.bold} className='text-white text-base'>Next</Text>
+                <Text style={styles.bold} className='text-white text-sm'>Selanjutnya</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity className='px-5 py-3 text-lg text-center items-center text-white rounded-xl w-fit bg-primary' onPress={handleClose}>
-                <Text style={styles.bold} className='text-white text-base'>Close</Text>
+                <Text style={styles.bold} className='text-white text-sm'>Tutup</Text>
               </TouchableOpacity>
             )}
           </View>

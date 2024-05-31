@@ -310,19 +310,19 @@ const PilihQuestion = ({ quizId, quizData }) => {
               </View>
               <View className='flex flex-row justify-between w-full px-2 mt-9'>
                 { currentQuestion == 1 ? <View></View> : (
-                  <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion(currentQuestion-1)}>
-                  Prev
+                  <Text style={styles.bold} className='px-3 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion(currentQuestion-1)}>
+                  Sebelumnya
                 </Text>
                 )  }
                 { currentQuestion == questionsData.length ? (
                   (
-                  <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => showName()}>
-                    Submit
+                  <Text style={styles.bold} className='px-3 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => showName()}>
+                    Kirim
                   </Text>
                   )  
                 ) : (
-                  <Text style={styles.bold} className='px-5 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion(currentQuestion+1)}>
-                  Next
+                  <Text style={styles.bold} className='px-3 py-3 text-lg text-white rounded-xl w-fit bg-primary' onPress={(e) => goToQuestion(currentQuestion+1)}>
+                  Selanjutnya
                 </Text>
                 )  }
                 

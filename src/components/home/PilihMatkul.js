@@ -58,7 +58,7 @@ function PilihMatkul () {
     return (
       <View className='flex w-full h-[50vh] justify-center items-center'>
         <Text style={styles.regular} className='text-lg text-center '>
-          {error.message}
+          {JSON.stringify(error)}
         </Text>
       </View>
     )

@@ -9,7 +9,7 @@ export default function App () {
 
   return (
     <Layout>
-      <CurrentPage page={''} />
+      <CurrentPage page={'Catatan'} />
       <View className='flex flex-col w-full '>
         <View className='flex flex-row items-center justify-between w-full px-5'>
           <Text style={styles.medium} className='text-xl font-semibold'>Catatan Saya</Text>

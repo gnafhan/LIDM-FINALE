@@ -10,11 +10,21 @@ function CatatanEditor({ id,  initialCatatan }){
     const richEditor = useRef()
     const [myCatatan, setMyCatatan] = useState({})
     const [keyboardCatatan, setKeyboardCatatan] = useState('')
+    const [idCatatan, setIdCatatan] = useState('')
     const myCatatanRef = useRef(myCatatan)
+    const idRef = useRef(idCatatan)
     const keyboardCatatanRef = useRef(keyboardCatatan)
     const getData = async () => {
         const catatanData = await AsyncStorage.getItem('catatan')
+        setIdCatatan(getId(generateRandomId(3),  Object.keys(JSON.parse(catatanData))))
         setMyCatatan(JSON.parse(catatanData))
+    }
+
+    const getId = (id, listId) => {
+        if((id.length > 0) && !listId.includes(id)){
+            return id
+        } 
+        return getId(generateRandomId(3), listId)
     }
 
     useEffect(() => {
@@ -31,7 +41,7 @@ function CatatanEditor({ id,  initialCatatan }){
             if(id == 'create'){
                 if(finalCatatan.length > 0){
                     let catatan = {...myCatatanRef.current}
-                    let catatanId = generateRandomId(6)
+                    let catatanId = idRef.current.length > 0 ? idRef.current : generateRandomId(3)
                     catatan[catatanId] = {
                         teks: finalCatatan
                     }
@@ -55,7 +65,8 @@ function CatatanEditor({ id,  initialCatatan }){
         richEditor.current?.setContentHTML(currentCatatan)
         keyboardCatatanRef.current = currentCatatan
         myCatatanRef.current = myCatatan
-    }, [currentCatatan, myCatatan])
+        idRef.current = idCatatan
+    }, [currentCatatan, myCatatan, idCatatan])
 
     return (
         <RichEditor
