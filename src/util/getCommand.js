@@ -1,7 +1,7 @@
 const commands = {
     'valid': ["valid valid", "pelit pelit", "balik balik", "balik-balik", "Alif Alif", "Farid Farid", "parit parit", "Walid Walid"],
     'stop': ["stop", "berhenti"],
-    'gantiHalaman': ["halaman"],
+    'gantiHalaman': ["pindah halaman"],
     'back': ["kembali", "back", "bek", "bag", "bad"],
     'scroll': ["scroll", "skrol", "gulir", "scrol"],
     'scrollNaik': ["naik", "atas", "night"],
